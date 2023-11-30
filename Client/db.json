@@ -1,0 +1,130 @@
+{
+  "categories": [
+    {
+      "id": 1,
+      "categorie": "Burger and Sandwiches",
+      "name": "Beef Burger",
+      "postrer": "https://tse1.mm.bing.net/th?id=OIP.HVsx2G7Ulhjj5mmUftwYdgHaE8&pid=Api&rs=1&c=1&qlt=95&w=174&h=116",
+      "price": 8.99
+    },
+    {
+      "id": 2,
+      "categorie": "Burger and Sandwiches",
+      "name": "Beef with Cheese",
+      "postrer": "https://tse1.mm.bing.net/th?id=OIP.HVsx2G7Ulhjj5mmUftwYdgHaE8&pid=Api&rs=1&c=1&qlt=95&w=174&h=116",
+      "price": 9.99
+    },
+    {
+      "id": 3,
+      "categorie": "Burger and Sandwiches",
+      "name": "Steak Sandwich",
+      "postrer": "https://tse1.mm.bing.net/th?id=OIP.HVsx2G7Ulhjj5mmUftwYdgHaE8&pid=Api&rs=1&c=1&qlt=95&w=174&h=116",
+      "price": 10.99
+    },
+    {
+      "id": 4,
+      "categorie": "Chicken",
+      "name": "Roasted Chicken",
+      "postrer": "https://tse1.mm.bing.net/th?id=OIP.PpPVqOfqEiV81edd0L3U6AHaGc&pid=Api&rs=1&c=1&qlt=95&w=130&h=113",
+      "price": 12.99
+    },
+    {
+      "id": 5,
+      "categorie": "Chicken",
+      "name": "Chicken Cutlet",
+      "postrer": "https://tse1.mm.bing.net/th?id=OIP.enKEG-OJunUn8IdtVz7qhgAAAA&pid=Api&rs=1&c=1&qlt=95&w=171&h=113",
+      "price": 11.99
+    },
+    {
+      "id": 6,
+      "categorie": "Beef",
+      "name": "Rolled Beef",
+      "postrer": "https://tse1.mm.bing.net/th?id=OIP.53R8xkjW-kFvTKNTip-YRgHaE8&pid=Api&rs=1&c=1&qlt=95&w=160&h=107",
+      "price": 13.99
+    },
+    {
+      "id": 7,
+      "categorie": "Beef",
+      "name": "Beef Fajita",
+      "postrer": "https://tse1.mm.bing.net/th?id=OIP.18aAhOXrbnAo9rnnJmpxeQHaLH&pid=Api&rs=1&c=1&qlt=95&w=73&h=110",
+      "price": 14.99
+    },
+    {
+      "id": 8,
+      "categorie": "Pasta",
+      "name": "Lasagna",
+      "postrer": "https://tse1.mm.bing.net/th?id=OIP.nZtm5GkcxjXFTGkC6hTkXAHaE8&pid=Api&rs=1&c=1&qlt=95&w=166&h=111",
+      "price": 15.99
+    },
+    {
+      "id": 9,
+      "categorie": "Pasta",
+      "name": "Neapolitan",
+      "postrer": "https://tse1.mm.bing.net/th?id=OIP.ngyqhigAn1u1JdHglgT9qQHaF8&pid=Api&rs=1&c=1&qlt=95&w=131&h=105",
+      "price": 16.99
+    },
+    {
+      "id": 10,
+      "categorie": "Ethiopia Dishes",
+      "name": "Kitfo",
+      "postrer": "https://tse2.mm.bing.net/th?id=OIP.ZwOgTuoseohHlNlajGUJjAHaE7&pid=Api&P=0&h=220",
+      "price": 15.99
+    },
+    {
+      "id": 11,
+      "categorie": "Ethiopia Dishes",
+      "name": "Tibs Firfr",
+      "postrer": "https://tse1.mm.bing.net/th?id=OIP.UNzUq9BOIlLXNrHAptuhfwHaEK&pid=Api&P=0&h=220",
+      "price": 16.99
+    },
+    {
+      "id": 12,
+      "categorie": "Hot Dirink",
+      "name": "Coffe",
+      "postrer": "https://tse1.mm.bing.net/th?id=OIP.OVYXu9Nt8b6SjNyb8Ppg9QHaEK&pid=Api&rs=1&c=1&qlt=95&w=177&h=99",
+      "price": 15.99
+    },
+    {
+      "id": 13,
+      "categorie": "Hot Dirink",
+      "name": "Macchiato",
+      "postrer": "https://tse1.mm.bing.net/th?id=OIP.coPqjwz_E7KZlPxmXC9vjwHaFj&pid=Api&rs=1&c=1&qlt=95&w=153&h=114",
+      "price": 16.99
+    },
+    {
+      "id": 14,
+      "categorie": "Dirink",
+      "name": "Special Juice",
+      "postrer": "https://tse1.mm.bing.net/th?id=OIP.or8UteHVIG1UYeTtWI28hQHaHJ&pid=Api&rs=1&c=1&qlt=95&w=126&h=121",
+      "price": 15.99
+    },
+    {
+      "id": 15,
+      "categorie": "Dirink",
+      "name": "Mixed Juice",
+      "postrer": "https://tse1.mm.bing.net/th?id=OIP.rUbYTO1BXzFnM7Iu-sfBKQHaGA&pid=Api&rs=1&c=1&qlt=95&w=130&h=105",
+      "price": 16.99
+    },
+    {
+      "id": 16,
+      "categorie": "Pizza",
+      "name": "Beef Pizza",
+      "postrer": "https://tse1.mm.bing.net/th?id=OIP.sXyKiDslSKvkyIDS-C29XQHaE7&pid=Api&rs=1&c=1&qlt=95&w=147&h=97",
+      "price": 17.99
+    },
+    {
+      "id": 17,
+      "categorie": "Pizza",
+      "name": "Chicken Pizza",
+      "postrer": "https://tse1.mm.bing.net/th?id=OIP.4sJ5nDZZsr6K3p_Mfg7xGgHaHa&pid=Api&rs=1&c=1&qlt=95&w=122&h=122",
+      "price": 18.99
+    },
+    {
+      "id": 18,
+      "categorie": "Pizza",
+      "name": "Mafia Special Pizza",
+      "postrer": "https://tse1.mm.bing.net/th?id=OIP.BVpLN5JMUF8RkZi_xUK7oAHaHZ&pid=Api&rs=1&c=1&qlt=95&w=123&h=122",
+      "price": 19.99
+    }
+  ]
+}
