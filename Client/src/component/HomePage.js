@@ -5,14 +5,17 @@ import {
   UploadOutlined,
   UserOutlined,
   VideoCameraOutlined,
+  BellOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu, Button, Input, theme } from "antd";
 import Categoriess from "./Category";
-import CategoryDetail from "./CategoryDetail"; 
+import CategoryDetail from "./CategoryDetail";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import Login from "./Login";
+import Register from "./Register";
 import TableManagementSystem from "./TableManagmentSystem";
+import { Link } from "react-router-dom";
 
 const { Header, Sider, Content } = Layout;
 const { Search } = Input;
@@ -21,7 +24,7 @@ const HomePage: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [selectedMenuItem, setSelectedMenuItem] = useState("1");
   const [list, setList] = useState([]);
-  const [selectedCategoryId, setSelectedCategoryId] = useState(null); // Track the selected category id
+  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
   const navigate = useNavigate();
   const {
     token: { colorBgContainer },
@@ -29,16 +32,15 @@ const HomePage: React.FC = () => {
 
   const handleMenuClick = ({ key }) => {
     setSelectedMenuItem(key);
-    setSelectedCategoryId(null); // Reset selectedCategoryId when a menu item is clicked
+    setSelectedCategoryId(null);
   };
 
   const handleSearch = (value) => {
-    // Implement your search logic here
     console.log("Search:", value);
   };
 
   const handleCategoryClick = (categoryId) => {
-    setSelectedCategoryId(categoryId); // Set the selected category id
+    setSelectedCategoryId(categoryId);
   };
 
   useEffect(() => {
@@ -69,10 +71,8 @@ const HomePage: React.FC = () => {
       case "2":
         return <Categoriess list={list} />;
 
-      // <ContentUI list={list} onCategoryClick={handleCategoryClick} />
-
       case "3":
-        navigate("/table-managment");
+        return <TableManagementSystem />;
       default:
         return null;
     }
@@ -124,16 +124,40 @@ const HomePage: React.FC = () => {
       </Sider>
       <Layout>
         <Header style={{ padding: 0, background: colorBgContainer }}>
-          <Button
-            type="text"
-            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-            onClick={() => setCollapsed(!collapsed)}
-            style={{
-              fontSize: "16px",
-              width: 64,
-              height: 64,
-            }}
-          />
+          <div style={{ display: "flex" }}>
+            <Button
+              type="text"
+              icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+              onClick={() => setCollapsed(!collapsed)}
+              style={{
+                fontSize: "16px",
+                width: 64,
+                height: 64,
+              }}
+            />
+            <div>
+              <nav>
+                <ul style={{ display: "flex" }}>
+                  <li>
+                    <Link to="/login">
+                      <Button className="bg-primary">Login</Button>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/register">
+                      <Button className="bg-primary">Register</Button>
+                    </Link>
+                  </li>
+                  <li>
+                   
+                    <Link to="/staffs">
+                      <BellOutlined />
+                    </Link>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
         </Header>
         <Content
           style={{

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 
-function Login(data) {
+function Login() {
   const nav = useNavigate();
   const [nameReg, setNameReg] = useState("");
   const [emailReg, setEmailReg] = useState("");
@@ -10,33 +10,28 @@ function Login(data) {
 
   const handdlesubmit = async (event) => {
     event.preventDefault();
+  
     try {
-      await axios
-        .post("http://localhost:9000/posts", {
-          name: nameReg,
-          email: emailReg,
-          password: passwordReg,
-        })
-        .then((response) => {
-          if ((response.data = "exist")) {
-            nav("/test");
-          } else if ((response.data = "notexist")) {
-            alert("please first registered");
-          }
-        })
-        .catch((e) => {
-          alert("wrong");
-          console.log(e);
-        });
-    } catch (e) {
-      console.log(e);
+      const data = { name: nameReg, email: emailReg, password: passwordReg };
+      const response = await axios.post("http://localhost:9000/users/login", data);
+  
+      if (response.data.error) {
+        alert(response.data.error);
+      } else {
+        sessionStorage.setItem("accessToken", response.data);
+      }
+    } catch (error) {
+      if (error.response) {
+        alert(`Server error: ${error.response.status}`);
+      } else if (error.request) {
+        alert("No response received from the server. Please try again later.");
+      } else {
+        alert("An unexpected error occurred. Please try again later.");
+      }
+      console.error(error);
     }
-
-    // const data = { name: nameReg, email: emailReg, password: passwordReg };
-    // axios.post("http://localhost:9000/posts", data).then((response) => {
-    //   console.log(response.data);
-    // });
   };
+  
 
   return (
     <div>
@@ -56,18 +51,18 @@ function Login(data) {
           }}
         />
         <input
-          type="pass"
+          type="password"
           placeholder="password"
           onChange={(e) => {
             setPasswordReg(e.target.value);
           }}
         />
-        <button type="submit">Register</button>
+        <button type="submit">Login</button>
       </form>
       <br />
       <p>OR</p>
       <br />
-      <Link to="/register" />
+      <Link to="/staff">Register</Link>
     </div>
   );
 }

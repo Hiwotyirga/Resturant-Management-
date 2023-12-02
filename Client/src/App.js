@@ -8,11 +8,15 @@ import CategoryDetail from "./component/CategoryDetail";
 import TableManagementSystem from "./component/TableManagmentSystem";
 import Register from "./component/Register";
 import Login from "./component/Login";
+import ReservationStaff from "./component/ReservationStaff";
+import Staff from "./component/Staff";
+
 function App() {
   const [collapsed, setCollapsed] = useState(false);
   const [selectedMenuItem, setSelectedMenuItem] = useState("1");
   const [list, setList] = useState([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
+
   useEffect(() => {
     let mounted = true;
 
@@ -33,17 +37,19 @@ function App() {
       mounted = false;
     };
   }, [selectedMenuItem]);
+
   return (
     <div>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/categories" element={<Categoriess list={list} />} />
-
           <Route path="/category/:categoryId" element={<CategoryDetail />} />
           <Route path="/table-managment" element={<TableManagementSystem />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/staff" element={<ReservationStaff />} />
+          <Route path="/staffs" element={<Staff />} />
         </Routes>
       </BrowserRouter>
     </div>

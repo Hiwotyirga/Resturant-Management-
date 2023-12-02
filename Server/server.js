@@ -9,6 +9,9 @@ const port = 9000;
 const usersRouter = require("./routes/Users");
 app.use("/users", usersRouter);
 
+const userRouter = require("./routes/Reservation");
+app.use("/reservation", userRouter);
+
 const db = require("./models");
 
 db.sequelize.sync().then(() => {
