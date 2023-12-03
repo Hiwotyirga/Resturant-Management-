@@ -10,6 +10,9 @@ import Register from "./component/Register";
 import Login from "./component/Login";
 import ReservationStaff from "./component/ReservationStaff";
 import Staff from "./component/Staff";
+import LoginStaff from "./component/LoginStaff";
+import RegisterStaff from "./component/RegisterStaff";
+import StaffList from "./component/StaffList";
 
 function App() {
   const [collapsed, setCollapsed] = useState(false);
@@ -42,14 +45,17 @@ function App() {
     <div>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/homepage" element={<HomePage />} />
           <Route path="/categories" element={<Categoriess list={list} />} />
           <Route path="/category/:categoryId" element={<CategoryDetail />} />
           <Route path="/table-managment" element={<TableManagementSystem />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Login />} />
           <Route path="/staff" element={<ReservationStaff />} />
           <Route path="/staffs" element={<Staff />} />
+          <Route path="/loginstaff" element={<LoginStaff />} />
+          <Route path="/registerstaff" element={<RegisterStaff />} />
+          <Route path="/staffList" element={<StaffList />} />
         </Routes>
       </BrowserRouter>
     </div>

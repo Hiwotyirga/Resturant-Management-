@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const { Users } = require("../models");
+const { Staff } = require("../models");
 const bcrypt = require("bcrypt");
 const {sign}=require("jsonwebtoken")
 
 router.get("/", async (req, res) => {
-  const postAll = await Users.findAll();
+  const postAll = await Staff.findAll();
   res.json(postAll);
 });
 
@@ -15,7 +15,7 @@ router.post("/", async (req, res) => {
 
 
     const hash = await bcrypt.hash(password, 10);
-    await Users.create({
+    await Staff.create({
       name: name,
       email: email,
       password: hash,
@@ -25,7 +25,7 @@ router.post("/", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   const { name, password } = req.body;
-  const user = await Users.findOne({ where: { name: name } });
+  const user = await Staff.findOne({ where: { name: name } });
 
   if (!user) {
     res.json({ error: "User doesn't exist" });

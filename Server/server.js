@@ -12,6 +12,9 @@ app.use("/users", usersRouter);
 const userRouter = require("./routes/Reservation");
 app.use("/reservation", userRouter);
 
+const staffRouter = require("./routes/Staff");
+app.use("/staff", staffRouter);
+
 const db = require("./models");
 
 db.sequelize.sync().then(() => {

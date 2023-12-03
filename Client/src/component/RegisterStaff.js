@@ -5,7 +5,7 @@ import "./login.css"
 import * as yup from "yup"
 
 
-function Register() {
+function RegisterStaff() {
   const nav = useNavigate();
   const [value, setValue] = useState({
     name: "",
@@ -13,17 +13,11 @@ function Register() {
     password: "",
   });
 
-  // useEffect(() => {
-  //   axios.get("http://localhost:9000/users").then((response) => {
-  //     console.log(response);
-  //   });
-  // }, []);
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     
-    axios.post("http://localhost:9000/users")
+    axios.post("http://localhost:9000/staff")
       .then(response => {
         console.log(response.data);
       })
@@ -79,4 +73,4 @@ function Register() {
   );
 }
 
-export default Register;
+export default RegisterStaff;

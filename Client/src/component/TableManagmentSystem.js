@@ -54,14 +54,28 @@ const TableManagementSystem = () => {
 
   const onSubmit = (values) => {
     setIsModalVisible(false);
-    axios
-      .post("http://localhost:9000/reservation", values)
-      .then((response) => {
-        console.log("Form Values:", values);
+    axios.post("http://localhost:9000/reservation"
+    // ,{
+    //   headers:{
+    //     accessToken:sessionStorage.getItem("accessToken")
+    //   }}
+      )
+      .then(response => {
+        console.log(response.data);
       })
-      .catch((error) => {
-        console.error("Error submitting the form:", error);
+      .catch(error => {
+        console.error("Registration failed:", error);
       });
+      
+      // .then((response) => {
+      //   if (response.values.error){
+      //     alert(response.values.error)
+      //   }
+      //   console.log("Form Values:", values);
+      // })
+      // .catch((error) => {
+      //   console.error("Error submitting the form:", error);
+      // });
   };
 
   const validationSchema = yup.object().shape({
@@ -110,6 +124,7 @@ const TableManagementSystem = () => {
             <Form
               // onFinish={onFinish}
               initialValues={values}
+              validationSchema={validationSchema}
             >
               <Modal
                 title="New Reservation"

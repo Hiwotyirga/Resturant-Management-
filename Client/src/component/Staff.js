@@ -1,9 +1,52 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { Space, Table, Tag } from 'antd';
 
 const Staff = () => {
   const [postAll, setPostAll] = useState([]);
+
+  const columns = [
+    {
+      title: 'Phone Number',
+      dataIndex: 'PhoneNumber',
+      key: 'PhoneNumber',
+    },
+    {
+      title: 'Date',
+      dataIndex: 'Date',
+      key: 'Date',
+    },
+    {
+      title: 'Time',
+      dataIndex: 'Time',
+      key: 'Time',
+    },
+    {
+      title: 'Number of Guests',
+      dataIndex: 'NumberOfGuest',
+      key: 'NumberOfGuest',
+    },
+    {
+      title: 'Selection',
+      dataIndex: 'Selection',
+      key: 'Selection',
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      render: (_, data) => (
+        <Space size="middle">
+          <a onClick={() => deleteItem(data.id)}>
+            <DeleteOutlined />
+          </a>
+          <a>
+            <EditOutlined />
+          </a>
+        </Space>
+      ),
+    },
+  ];
 
   useEffect(() => {
     axios.get("http://localhost:9000/reservation").then((response) => {
@@ -12,38 +55,14 @@ const Staff = () => {
   }, []);
 
   const deleteItem = (id) => {
-    setPostAll((prev) => prev.filter((item) => item.id !== id));
+    axios.delete(`http://localhost:9000/reservation/${id}`).then(() => {
+      alert("delete Successfully");                    
+    });
   };
 
   return (
     <div>
-      {postAll.map((value, key) => (
-        <div
-          key={key}
-          className="add"
-          style={{
-            border: "1px solid",
-            height: "50px",
-            display: "flex",
-            justifyContent: "space-evenly",
-            marginTop: "20px",
-            alignItems: "center",
-            background: "yellow",
-          }}
-        >
-          <div className="">{value.PhoneNumber}</div>
-          <div className="">{value.Date}</div>
-          <div className="">{value.Time}</div>
-          <div className="">{value.NumberOfGuest}</div>
-          <div className="">{value.Selection}</div>
-          <div onClick={() => deleteItem(value.id)}>
-            <DeleteOutlined />
-          </div>
-          <div>
-            <EditOutlined />
-          </div>
-        </div>
-      ))}
+      <Table columns={columns} dataSource={postAll} />
     </div>
   );
 };

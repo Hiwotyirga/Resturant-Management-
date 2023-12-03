@@ -16,7 +16,7 @@ import Staff from "./Staff";
 const { Header, Sider, Content } = Layout;
 const { Search } = Input;
 
-const ReservationStaff: React.FC = () => {
+const ReservationStaff = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [selectedMenuItem, setSelectedMenuItem] = useState("1");
   const [list, setList] = useState([]);

@@ -4,8 +4,7 @@ import axios from "axios";
 import "./login.css";
 import * as yup from "yup";
 
-
-function Login() {
+function LoginStaff() {
   const [nameReg, setNameReg] = useState("");
   const [emailReg, setEmailReg] = useState("");
   const [passwordReg, setPasswordReg] = useState("");
@@ -16,7 +15,7 @@ function Login() {
     try {
       const data = { name: nameReg, email: emailReg, password: passwordReg };
       const response = await axios.post(
-        "http://localhost:9000/users/login",
+        "http://localhost:9000/staff/login",
         data
       );
 
@@ -24,7 +23,7 @@ function Login() {
         alert(response.data.error);
       } else {
         sessionStorage.setItem("accessToken", response.data);
-        hist("/homepage")
+        hist("/staff");
       }
     } catch (error) {
       if (error.response) {
@@ -91,4 +90,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default LoginStaff;

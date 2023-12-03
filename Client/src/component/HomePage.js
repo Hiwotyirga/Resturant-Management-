@@ -20,7 +20,7 @@ import { Link } from "react-router-dom";
 const { Header, Sider, Content } = Layout;
 const { Search } = Input;
 
-const HomePage: React.FC = () => {
+const HomePage = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [selectedMenuItem, setSelectedMenuItem] = useState("1");
   const [list, setList] = useState([]);
@@ -139,18 +139,18 @@ const HomePage: React.FC = () => {
               <nav>
                 <ul style={{ display: "flex" }}>
                   <li>
-                    <Link to="/login">
+                    <Link to="/loginstaff">
                       <Button className="bg-primary">Login</Button>
                     </Link>
                   </li>
                   <li>
-                    <Link to="/register">
+                    <Link to="/registerstaff">
                       <Button className="bg-primary">Register</Button>
                     </Link>
                   </li>
                   <li>
                    
-                    <Link to="/staffs">
+                    <Link to="/staffList">
                       <BellOutlined />
                     </Link>
                   </li>
