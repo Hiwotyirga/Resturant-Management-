@@ -16,6 +16,22 @@ await Reservation.create(post)
 res.json(post)
     
   });
+  router.put("/update",  async (req, res) => {
+    const {newreservation,id}=req.body;
+    await Reservation.update({update:newreservation},{where :{id:id}})
+    res.json(newreservation)
+        
+      });
+  router.delete("/:postId",async(req,res)=>{
+    const postId=req.params.postId
+    await Reservation.destroy({
+      where:{
+        id:postId
+      }
+    })
+res.json("Delete sucessfully")
+
+  })
 
 module.exports = router;
  

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, unstable_HistoryRouter, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./login.css";
 import * as yup from "yup";
@@ -10,6 +10,7 @@ function Login() {
   const [emailReg, setEmailReg] = useState("");
   const [passwordReg, setPasswordReg] = useState("");
   const hist = useNavigate();
+  // const dig=unstable_HistoryRouter
   const handdlesubmit = async (event) => {
     event.preventDefault();
 

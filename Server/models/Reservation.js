@@ -20,6 +20,10 @@ module.exports = (Sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    // TableNum: {
+    //   type: DataTypes.STRING,
+    //   allowNull: false,
+    // },
   });
 
   return Reservation;
