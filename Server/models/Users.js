@@ -1,3 +1,4 @@
+// C:\Users\Hiwi\Resturant-Management-\Server\models\Users.js
 module.exports = (Sequelize, DataTypes) => {
   const Users = Sequelize.define("Users", {
     name: {
@@ -13,6 +14,10 @@ module.exports = (Sequelize, DataTypes) => {
       allowNull: false,
     },
   });
+
+  Users.associate = (models) => {
+    Users.hasMany(models.Reservation, { foreignKey: "userId" });
+  };
 
   return Users;
 };
