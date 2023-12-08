@@ -12,9 +12,10 @@ import Categoriess from "./Category";
 import CategoryDetail from "./CategoryDetail";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Login from "./Login";
-import Register from "./Register";
-import TableManagementSystem from "./TableManagmentSystem";
+import Login from "./User/Login";
+import Register from "./User/Register";
+import TableManagementSystem from "./User/TableManagmentSystem";
+import Table from "./User/table";
 import { Link } from "react-router-dom";
 
 const { Header, Sider, Content } = Layout;
@@ -63,6 +64,19 @@ const HomePage = () => {
       mounted = false;
     };
   }, [selectedMenuItem]);
+  const RenderContent = () => {
+    switch (selectedMenuItem) {
+      case "1":
+        return "";
+      case "2":
+        return "";
+
+      case "3":
+        return (<TableManagementSystem />);
+      default:
+        return null;
+    }
+  };
 
   const renderContent = () => {
     switch (selectedMenuItem) {
@@ -72,7 +86,7 @@ const HomePage = () => {
         return <Categoriess list={list} />;
 
       case "3":
-        return <TableManagementSystem />;
+        return (<Table />);
       default:
         return null;
     }
@@ -144,18 +158,19 @@ const HomePage = () => {
                     </Link>
                   </li>
                   <li>
-                    <Link to="/registerstaff">
+                    <Link to="/homepage">
                       <Button className="bg-primary">Register</Button>
                     </Link>
                   </li>
                   <li>
-                   
                     <Link to="/staffList">
                       <BellOutlined />
                     </Link>
                   </li>
+                  <li>  <Link>{RenderContent()}</Link></li>
                 </ul>
               </nav>
+            
             </div>
           </div>
         </Header>

@@ -5,7 +5,7 @@ import "./login.css"
 import * as yup from "yup"
 
 
-function RegisterStaff() {
+function Register() {
   const nav = useNavigate();
   const [value, setValue] = useState({
     name: "",
@@ -13,17 +13,20 @@ function RegisterStaff() {
     password: "",
   });
 
+  // useEffect(() => {
+  //   axios.get("http://localhost:9000/users").then((response) => {
+  //     console.log(response);
+  //   });
+  // }, []);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     
-    axios.post("http://localhost:9000/staff")
+    axios.post("http://localhost:9000/users",value)
       .then(response => {
         console.log(response.data);
       })
-      .catch(error => {
-        console.error("Registration failed:", error);
-      });
   };
   const validationSchema = yup.object().shape({
     name: yup.string().required(),
@@ -73,4 +76,4 @@ function RegisterStaff() {
   );
 }
 
-export default RegisterStaff;
+export default Register;

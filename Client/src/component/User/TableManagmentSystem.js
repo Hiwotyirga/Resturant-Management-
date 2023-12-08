@@ -5,22 +5,25 @@ import { Card, Space, TimePicker, DatePicker, Radio } from "antd";
 // import {Formik,ErrorMessage,Form} from "formik";
 import moment from "moment";
 import * as yup from "yup";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+
 const { Header, Sider, Content } = Layout;
 const { Search } = Input;
-import axios from "axios";
 
 const TableManagementSystem = () => {
-  const [collapsed, setCollapsed] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [open, setOpen] = useState(false);
   const [postAll, setPostAll] = useState([]);
   const [values, setValues] = useState({
+    // userId: "",
     PhoneNumber: "",
     Date: "",
     Time: "",
     NumberOfGuest: "",
-    Selection: "",
+    Selection: "Regular",
   });
+  const {id}=useParams();
 
   const handleValue = (name, value) => {
     setValues({ ...values, [name]: value });
@@ -53,57 +56,57 @@ const TableManagementSystem = () => {
   };
 
   const onSubmit = (values) => {
-    setIsModalVisible(false);
-    axios.post("http://localhost:9000/reservation"
-    // ,{
-    //   headers:{
-    //     accessToken:sessionStorage.getItem("accessToken")
-    //   }}
-      )
-      .then(response => {
-        console.log(response.data);
-      })
-      .catch(error => {
-        console.error("Registration failed:", error);
-      });
-      
-      // .then((response) => {
-      //   if (response.values.error){
-      //     alert(response.values.error)
-      //   }
-      //   console.log("Form Values:", values);
-      // })
-      // .catch((error) => {
-      //   console.error("Error submitting the form:", error);
-      // });
-  };
+    // const userId = values.userId.toString().trim();
+    // const phoneRegex = /^0[0-9]{9}$/;
+    const NumberOfGuest = values.NumberOfGuest.toString().trim();
 
-  const validationSchema = yup.object().shape({
-    Date: yup.string().required(),
-    Time: yup.string().required(),
-    Selection: yup.string().required(),
-    PhoneNumber: yup
-      .string()
-      .matches(/^\d+$/, "Phone number must be numeric")
-      .required("Phone number is required"),
-    NumberOfGuest: yup
-      .number()
-      .positive("Number of guests must be a positive number")
-      .integer("Number of guests must be an integer")
-      .required("Number of guests is required"),
-  });
+    const PhoneNumber = values.PhoneNumber.toString().trim();
+
+    if (
+      values.PhoneNumber === "" ||
+      // userId === "" ||
+      values.Date.trim() === "" ||
+      values.Time.trim() === "" ||
+      values.Selection.trim() === "" ||
+      NumberOfGuest === ""
+    ) {
+      alert("Please provide valid input for all fields");
+      return;
+    }
+    const numberOfGuest = parseInt(values.NumberOfGuest, 10);
+
+    if (isNaN(numberOfGuest) || numberOfGuest <= 0 || numberOfGuest % 1 !== 0) {
+      alert("Please enter a valid positive integer for Number of Guests");
+      return;
+    }
+    if (isNaN(PhoneNumber) || PhoneNumber <= 0 || PhoneNumber % 1 !== 0) {
+      alert("Please enter a valid Number of Phone number");
+      return;
+    }
+    setIsModalVisible(false);
+    axios
+      .post(
+        "http://localhost:9000/reservation",
+        { ...values, NumberOfGuest: numberOfGuest, PhoneNumber: PhoneNumber,userId:id },
+        {
+          headers: {
+            accessToken: sessionStorage.getItem("accessToken"),
+          },
+        }
+      )
+      .then((response) => {
+        // console.log(response.data);
+        alert("seccuss full");
+      });
+  };
 
   return (
     <Layout>
       <Layout>
-        <Content
-          style={{
-            margin: "24px 16px",
-            padding: 24,
-            minHeight: 280,
-            background: "colorBgContainer",
-          }}
-        >
+        <Header style={{ backgroundColor: "white" }}>
+          {/* <Header
+        //  style={{ padding: 0, background: colorBgContainer }}
+        > */}
           <div style={{}}>
             <Button
               className="ml-500px inline-flex items-center "
@@ -121,11 +124,7 @@ const TableManagementSystem = () => {
             </Button>
           </div>
           <div>
-            <Form
-              // onFinish={onFinish}
-              initialValues={values}
-              validationSchema={validationSchema}
-            >
+            <Form initialValues={values}>
               <Modal
                 title="New Reservation"
                 visible={isModalVisible}
@@ -154,9 +153,24 @@ const TableManagementSystem = () => {
                           </label>
                         </div>
                         <div>
+                          <div style={{ display: "flex", marginTop: "10px" }}>
+                            {/* <label style={{ fontWeight: "bold" }}> */}
+                              {/* USERID{" "} */}
+                            {/* </label>
+                            <div style={{ marginLeft: "40px", width: "0px" }}>
+                              <InputNumber
+                                // type="num"
+                                name="userId"
+                                // placeholder="Enter userId"
+                                value={values.userId}
+                                onChange={(value) =>
+                                  handleValue("userId", value)
+                                }
+                              /> */}
+                            {/* </div> */}
+                          </div>
                           <div style={{ display: "flex" }}>
                             <label style={{ fontWeight: "bold" }}>Date</label>
-
                             <Space
                               direction="vertical"
                               style={{
@@ -206,7 +220,9 @@ const TableManagementSystem = () => {
                           </div>
                         </div>
                         <div style={{ display: "flex", marginTop: "10px" }}>
-                          <label style={{ fontWeight: "bold" }}>Guest number</label>
+                          <label style={{ fontWeight: "bold" }}>
+                            Guest number
+                          </label>
                           <div style={{ marginLeft: "40px", width: "20px" }}>
                             <InputNumber
                               type="num"
@@ -221,7 +237,9 @@ const TableManagementSystem = () => {
                         </div>
                         <div></div>
                         <div style={{ display: "flex", marginTop: "10px" }}>
-                          <label style={{ fontWeight: "bold" }}>Phone number</label>
+                          <label style={{ fontWeight: "bold" }}>
+                            Phone number
+                          </label>
                           <div style={{ marginLeft: "40px", width: "0px" }}>
                             <InputNumber
                               type="tel"
@@ -259,136 +277,8 @@ const TableManagementSystem = () => {
                 </div>
               </Modal>
             </Form>
-            <div style={{ width: "100%", display: "flex" }}>
-              <Card
-                style={{
-                  width: "250px",
-                  height: "100px",
-                  backgroundColor: "grey",
-                }}
-              >
-                Table1
-              </Card>
-              <div style={{ display: "flex", marginLeft: "100px" }}>
-                <Card
-                  style={{
-                    width: "100px",
-                    height: "100px",
-                    backgroundColor: "grey",
-                  }}
-                >
-                  Table2
-                </Card>{" "}
-                <Card
-                  style={{
-                    width: "100px",
-                    height: "100px",
-                    backgroundColor: "grey",
-                  }}
-                ></Card>
-                <div style={{ marginLeft: "150px" }}> </div>
-                <Card
-                  style={{
-                    width: "100px",
-                    height: "100px",
-                    backgroundColor: "grey",
-                  }}
-                >
-                  Table3
-                </Card>
-              </div>
-            </div>
-
-            <div style={{}}>
-              <div>
-                <div
-                  style={{
-                    display: "flex",
-                  }}
-                >
-                  <div>
-                    <Card
-                      style={{
-                        width: "200px",
-                        height: "200px",
-                        borderRadius: "50px",
-                        backgroundColor: "grey",
-                        // margin: "100px 0 100  300px",
-                        margin: "100px 0 0 150px",
-                      }}
-                    >
-                      Table4
-                    </Card>
-                  </div>
-                  <div>
-                    <Card
-                      style={{
-                        width: "100px",
-                        height: "100px",
-
-                        backgroundColor: "grey",
-
-                        margin: "150px 0 0 150px",
-                      }}
-                    >
-                      Table9
-                    </Card>
-                  </div>
-                  <Card
-                    style={{
-                      width: "150px",
-                      height: "200px",
-                      backgroundColor: "grey",
-
-                      margin: "100px 0 70px 200px",
-                    }}
-                  >
-                    Table5
-                  </Card>
-                </div>
-              </div>
-            </div>
           </div>
-          <div style={{ display: "flex" }}>
-            <Card
-              style={{
-                backgroundColor: "grey",
-                width: "100px",
-                height: "100px",
-              }}
-            >
-              Table6
-            </Card>
-            <Card
-              style={{
-                backgroundColor: "grey",
-                width: "300px",
-                height: "100px",
-                marginLeft: "100px",
-              }}
-            >
-              Table7
-            </Card>
-            <div style={{ display: "flex", marginLeft: "100px" }}>
-              <Card
-                style={{
-                  backgroundColor: "grey",
-                  width: "100px",
-                  height: "100px",
-                }}
-              >
-                Table8
-              </Card>{" "}
-              <Card
-                style={{
-                  backgroundColor: "grey",
-                  width: "100px",
-                  height: "100px",
-                }}
-              ></Card>
-            </div>
-          </div>
-        </Content>
+        </Header>
       </Layout>
     </Layout>
   );

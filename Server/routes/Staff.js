@@ -10,40 +10,29 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const { name, email, password } = req.body;
-  // console.log("Received data:", name, email, password);
+  const staffregister = req.body;
 
 
-    const hash = await bcrypt.hash(password, 10);
-    await Staff.create({
-      name: name,
-      email: email,
-      password: hash,
-    });
+    // const hash = await bcrypt.hash(password, 10);
+    await Staff.create(staffregister);
     res.json("Success");
 });
 
 router.post("/login", async (req, res) => {
   const { name, password } = req.body;
-  const user = await Staff.findOne({ where: { name: name } });
+  const user = await Staff.findOne({ where: { name: name ,password:password} });
 
   if (!user) {
     res.json({ error: "User doesn't exist" });
     return;
   }
-
-  
-    const match = await bcrypt.compare(password, user.password).then((match)=>{
-      if (!match) {
-        res.json({ error: "Wrong password or name" });
-        
-      }
+   
       res.json("you login")
-    })
+    // })
  
     
-    const accessToken =sign({name:user.name,id:user.id},"importantsecret");
-    res.json(accessToken)
+    // const accessToken =sign({name:user.name,id:user.id},"importantsecret");
+    // res.json(accessToken)
  
 });
 

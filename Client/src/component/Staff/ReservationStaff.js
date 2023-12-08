@@ -6,9 +6,9 @@ import {
   UserOutlined,
   VideoCameraOutlined,
 } from "@ant-design/icons";
-import { Layout, Menu, Button, Input, theme } from "antd";
-import Categoriess from "./Category";
-import CategoryDetail from "./CategoryDetail";
+import { Layout, Menu, Button, Input, theme, Card } from "antd";
+// import Categoriess from "./Category";
+// import CategoryDetail from "./CategoryDetail";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Staff from "./Staff";
@@ -21,7 +21,7 @@ const ReservationStaff = () => {
   const [selectedMenuItem, setSelectedMenuItem] = useState("1");
   const [list, setList] = useState([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
-  const [postAll,setPostAll]=useState([])
+  const [postAll, setPostAll] = useState([]);
   const navigate = useNavigate();
   const {
     token: { colorBgContainer },
@@ -122,7 +122,9 @@ const ReservationStaff = () => {
         />
       </Sider>
       <Layout>
-        <Header style={{ padding: 0, background: colorBgContainer }}>
+        <Header
+          style={{ padding: 0, background: colorBgContainer, height: 75 }}
+        >
           <div style={{ display: "flex" }}>
             <Button
               type="text"
@@ -134,6 +136,19 @@ const ReservationStaff = () => {
                 height: 64,
               }}
             />
+            <div style={{ display: "flex" }}>
+              <Card style={{ marginLeft: "100px", width: "150px" }}>
+                CONFORMED{" "}
+              </Card>
+              <Card style={{ marginLeft: "100px", width: "150px" }}>
+                {" "}
+                CANCELLED
+              </Card>
+              <Card style={{ marginLeft: "100px", width: "150px" }}>
+                STARTED
+              </Card>
+              <Card style={{ marginLeft: "100px", width: "150px" }}></Card>
+            </div>
           </div>
         </Header>
         <Content
@@ -143,7 +158,9 @@ const ReservationStaff = () => {
             minHeight: 280,
             background: colorBgContainer,
           }}
-        >{renderContent()}</Content>
+        >
+          {renderContent()}
+        </Content>
       </Layout>
     </Layout>
   );
