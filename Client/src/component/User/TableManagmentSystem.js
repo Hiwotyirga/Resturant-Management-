@@ -21,9 +21,9 @@ const TableManagementSystem = () => {
     Date: "",
     Time: "",
     NumberOfGuest: "",
-    Selection: "Regular",
+    Selection: "",
   });
-  const {id}=useParams();
+  const { id } = useParams();
 
   const handleValue = (name, value) => {
     setValues({ ...values, [name]: value });
@@ -56,7 +56,6 @@ const TableManagementSystem = () => {
   };
 
   const onSubmit = (values) => {
-    // const userId = values.userId.toString().trim();
     // const phoneRegex = /^0[0-9]{9}$/;
     const NumberOfGuest = values.NumberOfGuest.toString().trim();
 
@@ -87,7 +86,9 @@ const TableManagementSystem = () => {
     axios
       .post(
         "http://localhost:9000/reservation",
-        { ...values, NumberOfGuest: numberOfGuest, PhoneNumber: PhoneNumber,userId:id },
+        values,
+        { ...values, NumberOfGuest: numberOfGuest, PhoneNumber: PhoneNumber },
+        { userId: id },
         {
           headers: {
             accessToken: sessionStorage.getItem("accessToken"),
@@ -153,22 +154,6 @@ const TableManagementSystem = () => {
                           </label>
                         </div>
                         <div>
-                          <div style={{ display: "flex", marginTop: "10px" }}>
-                            {/* <label style={{ fontWeight: "bold" }}> */}
-                              {/* USERID{" "} */}
-                            {/* </label>
-                            <div style={{ marginLeft: "40px", width: "0px" }}>
-                              <InputNumber
-                                // type="num"
-                                name="userId"
-                                // placeholder="Enter userId"
-                                value={values.userId}
-                                onChange={(value) =>
-                                  handleValue("userId", value)
-                                }
-                              /> */}
-                            {/* </div> */}
-                          </div>
                           <div style={{ display: "flex" }}>
                             <label style={{ fontWeight: "bold" }}>Date</label>
                             <Space

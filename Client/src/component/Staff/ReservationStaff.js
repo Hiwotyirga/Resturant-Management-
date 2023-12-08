@@ -12,6 +12,7 @@ import { Layout, Menu, Button, Input, theme, Card } from "antd";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Staff from "./Staff";
+import Status from "./status";
 
 const { Header, Sider, Content } = Layout;
 const { Search } = Input;
@@ -60,17 +61,33 @@ const ReservationStaff = () => {
       mounted = false;
     };
   }, [selectedMenuItem]);
-
+  const Contents = () => {
+    switch (selectedMenuItem) {
+      case "1":
+        return <div>Hello from Content 1</div>;
+      case "2":
+        return "";
+      //  <Categoriess list={list} />;
+      case "3":
+        return <Status />;
+      case "4":
+        // Render the content for "Order" item
+        return <div>Order Content</div>;
+      default:
+        return null;
+    }
+  };
   const renderContent = () => {
     switch (selectedMenuItem) {
       case "1":
         return <div>Hello from Content 1</div>;
       case "2":
-        return <Categoriess list={list} />;
+        return "";
+      //  <Categoriess list={list} />;
       case "3":
         return <Staff />;
       case "4":
-        // Render the content for "Order" item
+        
         return <div>Order Content</div>;
       default:
         return null;
@@ -136,19 +153,7 @@ const ReservationStaff = () => {
                 height: 64,
               }}
             />
-            <div style={{ display: "flex" }}>
-              <Card style={{ marginLeft: "100px", width: "150px" }}>
-                CONFORMED{" "}
-              </Card>
-              <Card style={{ marginLeft: "100px", width: "150px" }}>
-                {" "}
-                CANCELLED
-              </Card>
-              <Card style={{ marginLeft: "100px", width: "150px" }}>
-                STARTED
-              </Card>
-              <Card style={{ marginLeft: "100px", width: "150px" }}></Card>
-            </div>
+            <Contents />
           </div>
         </Header>
         <Content

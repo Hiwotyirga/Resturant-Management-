@@ -72,7 +72,7 @@ const HomePage = () => {
         return "";
 
       case "3":
-        return (<TableManagementSystem />);
+        return <TableManagementSystem />;
       default:
         return null;
     }
@@ -86,7 +86,7 @@ const HomePage = () => {
         return <Categoriess list={list} />;
 
       case "3":
-        return (<Table />);
+        return <Table />;
       default:
         return null;
     }
@@ -167,10 +167,12 @@ const HomePage = () => {
                       <BellOutlined />
                     </Link>
                   </li>
-                  <li>  <Link>{RenderContent()}</Link></li>
+                  <li>
+                    {" "}
+                    <Link>{RenderContent()}</Link>
+                  </li>
                 </ul>
               </nav>
-            
             </div>
           </div>
         </Header>

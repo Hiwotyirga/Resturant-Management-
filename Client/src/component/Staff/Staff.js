@@ -34,7 +34,7 @@ const Staff = () => {
     }));
   };
   const handleOk = () => {
-    axios.put(`http://localhost:9000/reservation/${Id}`, value)
+    axios.put("http://localhost:9000/reservation/table", value,{id:id})
       .then((res) => {
         console.log(res.data);
         setIsModalVisible(false);

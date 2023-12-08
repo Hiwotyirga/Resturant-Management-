@@ -21,9 +21,9 @@ function Login() {
         
         else{
           sessionStorage.setItem("accessToken",res.data);
- 
+          hist("/homepage");
         }
-        hist("/homepage");
+        
       });
   };
 
