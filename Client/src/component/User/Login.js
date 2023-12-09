@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, unstable_HistoryRouter, useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./login.css";
+// import "./lo/gin.css";
 import * as yup from "yup";
 
 function Login() {
@@ -17,13 +17,14 @@ function Login() {
     const response = await axios
       .post("http://localhost:9000/users/login", data)
       .then((res) => {
-        if(res.data.error){alert(res.data.errror);}
-        
-        else{
-          sessionStorage.setItem("accessToken",res.data);
+        if (res.data.error) {
+          alert(res.data.errror);
+        } else {
+          sessionStorage.setItem("accessToken", res.data);
           hist("/homepage");
         }
-        
+        // alert("didit");
+        // console.log(res.data);
       });
   };
 

@@ -16,7 +16,6 @@ const TableManagementSystem = () => {
   const [open, setOpen] = useState(false);
   const [postAll, setPostAll] = useState([]);
   const [values, setValues] = useState({
-    // userId: "",
     PhoneNumber: "",
     Date: "",
     Time: "",
@@ -56,14 +55,12 @@ const TableManagementSystem = () => {
   };
 
   const onSubmit = (values) => {
-    // const phoneRegex = /^0[0-9]{9}$/;
     const NumberOfGuest = values.NumberOfGuest.toString().trim();
 
     const PhoneNumber = values.PhoneNumber.toString().trim();
 
     if (
       values.PhoneNumber === "" ||
-      // userId === "" ||
       values.Date.trim() === "" ||
       values.Time.trim() === "" ||
       values.Selection.trim() === "" ||
@@ -84,20 +81,23 @@ const TableManagementSystem = () => {
     }
     setIsModalVisible(false);
     axios
-      .post(
-        "http://localhost:9000/reservation",
-        values,
-        { ...values, NumberOfGuest: numberOfGuest, PhoneNumber: PhoneNumber },
-        { userId: id },
-        {
-          headers: {
-            accessToken: sessionStorage.getItem("accessToken"),
-          },
-        }
-      )
+      .post( `http://localhost:9000/reservation?userId=${id}`, values, {
+        headers: {
+          Authorization: "Bearer " + sessionStorage.getItem("accessToken"),
+        },
+        data: {
+          NumberOfGuest: numberOfGuest,
+          PhoneNumber: PhoneNumber,
+        },
+        
+      })
       .then((response) => {
-        // console.log(response.data);
-        alert("seccuss full");
+        if (response.data.error) {
+          alert(response.data.error);
+        } else {
+          console.log(response.data);
+          // alert("seccuss full");
+        }
       });
   };
 
@@ -105,9 +105,6 @@ const TableManagementSystem = () => {
     <Layout>
       <Layout>
         <Header style={{ backgroundColor: "white" }}>
-          {/* <Header
-        //  style={{ padding: 0, background: colorBgContainer }}
-        > */}
           <div style={{}}>
             <Button
               className="ml-500px inline-flex items-center "

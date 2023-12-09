@@ -4,14 +4,16 @@ import { Table, Space, Tag, Modal, Input } from "antd";
 import { useParams } from "react-router-dom";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
+
 const Staff = () => {
   const [reservations, setReservations] = useState([]);
   const [IsModalVisible, setIsModalVisible] = useState(false);
   const [Status, setStatus] = useState([]);
   const [value, setValue] = useState({
-    TableNumber:""
+    TableNumber: "",
   });
   const { Id } = useParams();
+
   const ShowModal = () => {
     setIsModalVisible(true);
   };
@@ -33,22 +35,47 @@ const Staff = () => {
       [name]: value,
     }));
   };
-  const handleOk = () => {
-    axios.put("http://localhost:9000/reservation/table", value,{id:id})
-      .then((res) => {
-        console.log(res.data);
-        setIsModalVisible(false);
+  // const handleOk = () => {
+  //   if (!reservationId) {
+  //     alert("Please select a reservation to update.");
+  //     return;
+  //   }
+
+  //   axios
+  //     .put(`http://localhost:9000/reservation/${reservationId}`, value)
+  //     .then((res) => {
+  //       console.log(res.data);
+  //       setIsModalVisible(false);
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  // };
+  const edittable = (option) => {
+     if (option === "table") {
+       const newTable = prompt('Enter new table number');
+        axios.put("http://localhost:9000/reservation/table", { newTable: newTable, id: Id }) 
+        .then(response => { console.log("Table update response:", response.data); // Add the updated reservation to the state or refresh the reservations from the server 
       })
-  };
-  const handleComfirm = () => {
-    axios
-      .put(`http://localhost:9000/reservation/comfirm/${Id}`, {
-        Status: "comfirm",
-      })
-      .then(() => {
-        setStatus("comfirm");
-      });
-  };
+         .catch(error => { console.error("Table update error:", error); }); } };
+  
+  
+  
+
+  // const handleComfirm = () => {
+  //   // console.log("Reservation ID:", reservationId);
+
+  //   axios
+  //     .put(`http://localhost:9000/reservation/comfirm/${Id}`, {
+  //       Status: "comfirm",
+  //     })
+  //     .then(() => {
+  //       setStatus("comfirm");
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  // };
 
   const handleCancel = () => {
     setIsModalVisible(false);
@@ -92,13 +119,12 @@ const Staff = () => {
       key: "action",
       render: (_, data) => (
         <Space size="middle">
-          <a onClick={() => deleteItem(data.id)}>
-            <DeleteOutlined />
-          </a>
-          <a onClick={ShowModal}>
+          <a onClick={() => edittable("table")}>
             <EditOutlined />
           </a>
-          <a onClick={handleComfirm}>
+          <a 
+          // onClick={() => handleComfirm(reservationId)}
+          >
             <button>Comform</button>
           </a>
         </Space>
@@ -110,19 +136,19 @@ const Staff = () => {
     <div>
       <h1>Reservation List</h1>
       <Table columns={columns} dataSource={reservations} />
-      <Modal
+      {/* <Modal
         title="Update Table Number"
         visible={IsModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
       >
         <Input
-  type="text"
-  placeholder="Enter Table Number"
-  name="TableNumber"
-  onChange={(e) => setValue({ ...value, TableNumber: e.target.value })}
-/>
-      </Modal>
+          type="text"
+          placeholder="Enter Table Number"
+          name="TableNumber"
+          onChange={(e) => setValue({ ...value, TableNumber: e.target.value })}
+        />
+      </Modal> */}
     </div>
   );
 };
