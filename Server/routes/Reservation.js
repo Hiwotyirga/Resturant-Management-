@@ -55,10 +55,30 @@ router.post("/", validateToken, async (req, res) => {
 
   res.json(newReservation);
 });
+router.put("/userdata", validateToken,async (req, res) => {
+  const { name, id } = req.user;
 
+  const { PhoneNumber,Date,Time,NumberOfGuest,Selection } = req.body;
+
+  const updatedReservation = {PhoneNumber,Date,Time,NumberOfGuest,Selection };
+
+  await Reservation.update(updatedReservation, { where: { userId:id } });
+
+
+  res.json(updatedReservation);
+});
+router.delete("/delete",validateToken, async (req, res) => {
+  const {id}=req.user
+  await Reservation.destroy({
+    where: {
+      userId:id,
+    },
+  });
+  res.json("Delete sucessfully");
+});
 // router.put("/:reservationId", async (req, res) => {
 //   const reservationId = req.params.reservationId;
-//   const { TableNumber } = req.body;
+//   const { TableNumber } = req.body; 
 
 //   const reservation = await Reservation.findByPk(reservationId);
 
@@ -70,6 +90,7 @@ router.post("/", validateToken, async (req, res) => {
 
 //   res.json(updatedReservation);
 // });
+
 router.put("/table", async (req, res) => {
   const { newTable, id } = req.body;
   try {
@@ -105,14 +126,6 @@ router.put("/comfirm/:id", async (req, res) => {
 //   res.json(newreservation);
 // });
 
-router.delete("/:postId", async (req, res) => {
-  const postId = req.params.postId;
-  await Reservation.destroy({
-    where: {
-      id: postId,
-    },
-  });
-  res.json("Delete sucessfully");
-});
+
 
 module.exports = router;

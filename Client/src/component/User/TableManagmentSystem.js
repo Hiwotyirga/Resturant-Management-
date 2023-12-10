@@ -2,9 +2,7 @@ import React, { useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { Layout, Modal, Button, Input, InputNumber, Form } from "antd";
 import { Card, Space, TimePicker, DatePicker, Radio } from "antd";
-// import {Formik,ErrorMessage,Form} from "formik";
 import moment from "moment";
-import * as yup from "yup";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
