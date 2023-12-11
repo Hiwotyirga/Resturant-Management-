@@ -30,6 +30,10 @@ module.exports = (Sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
+    Started: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
   });
 
   Reservation.associate = (models) => {

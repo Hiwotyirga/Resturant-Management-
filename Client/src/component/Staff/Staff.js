@@ -4,7 +4,6 @@ import { Table, Space, Tag, Modal, Input } from "antd";
 import { useParams } from "react-router-dom";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
-
 const Staff = () => {
   const [reservations, setReservations] = useState([]);
   const [IsModalVisible, setIsModalVisible] = useState(false);
@@ -12,7 +11,7 @@ const Staff = () => {
   const [value, setValue] = useState({
     TableNumber: "",
   });
-  const { Id } = useParams();
+  // const { Id } = useParams();
 
   const ShowModal = () => {
     setIsModalVisible(true);
@@ -35,52 +34,83 @@ const Staff = () => {
       [name]: value,
     }));
   };
-  // const handleOk = () => {
-  //   if (!reservationId) {
-  //     alert("Please select a reservation to update.");
-  //     return;
-  //   }
 
-  //   axios
-  //     .put(`http://localhost:9000/reservation/${reservationId}`, value)
-  //     .then((res) => {
-  //       console.log(res.data);
-  //       setIsModalVisible(false);
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // };
-  const edittable = (option) => {
-     if (option === "table") {
-       const newTable = prompt('Enter new table number');
-        axios.put("http://localhost:9000/reservation/table", { newTable: newTable, id: Id }) 
-        .then(response => { console.log("Table update response:", response.data); // Add the updated reservation to the state or refresh the reservations from the server 
+  const confirmReservation = (reservationId) => {
+    axios
+      .put(`http://localhost:9000/reservation/comfirm/${reservationId}`)
+      .then(() => {
+        // If you want to update the state with the new reservation status, you can do it here
+        // For example, update the state with the modified reservation
+        setReservations((prevReservations) => {
+          return prevReservations.map((reservation) => {
+            if (reservation.id === reservationId) {
+              return { ...reservation, Status: "confirm" };
+            }
+            return reservation;
+          });
+        });
+        alert("Reservation confirmed successfully!");
       })
-         .catch(error => { console.error("Table update error:", error); }); } };
-  
-  
-  
-
-  // const handleComfirm = () => {
-  //   // console.log("Reservation ID:", reservationId);
-
-  //   axios
-  //     .put(`http://localhost:9000/reservation/comfirm/${Id}`, {
-  //       Status: "comfirm",
-  //     })
-  //     .then(() => {
-  //       setStatus("comfirm");
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // };
+      .catch((error) => {
+        console.error("Confirmation error:", error);
+      });
+  };
 
   const handleCancel = () => {
     setIsModalVisible(false);
     setValue("");
   };
+  const edittable = (reservationId) => {
+    const newTable = prompt("Enter new table number");
+    if (!newTable) {
+      // User cancelled the prompt
+      return;
+    }
+
+    axios
+      .put(`http://localhost:9000/reservation/table/${reservationId}`, {
+        TableNumber: newTable,
+      })
+      .then((response) => {
+        console.log("Table update response:", response.data);
+        // If you want to update the state with the new reservation data, you can do it here
+        // For example, update the state with the modified reservation
+        setReservations((prevReservations) => {
+          return prevReservations.map((reservation) => {
+            if (reservation.id === reservationId) {
+              return { ...reservation, TableNumber: newTable };
+            }
+            return reservation;
+          });
+          
+        });
+        
+      })
+      .catch((error) => {
+        console.error("Table update error:", error);
+      });
+  };
+  const  startReservation = (reservationId) => {
+    axios
+      .put(`http://localhost:9000/reservation/start/${reservationId}`)
+      .then(() => {
+        // If you want to update the state with the new reservation status, you can do it here
+        // For example, update the state with the modified reservation
+        setReservations((prevReservations) => {
+          return prevReservations.map((reservation) => {
+            if (reservation.id === reservationId) {
+              return { ...reservation, Startrd: "start" };
+            }
+            return reservation;
+          });
+        });
+        alert("Reservation Started successfully!");
+      })
+      .catch((error) => {
+        console.error("start error:", error);
+      });
+  };
+
 
   const columns = [
     {
@@ -119,13 +149,18 @@ const Staff = () => {
       key: "action",
       render: (_, data) => (
         <Space size="middle">
-          <a onClick={() => edittable("table")}>
+          <a onClick={() => edittable(data.id)}>
             <EditOutlined />
           </a>
-          <a 
-          // onClick={() => handleComfirm(reservationId)}
+          <a
+          onClick={() => confirmReservation(data.id)}
           >
             <button>Comform</button>
+          </a>
+          <a
+          onClick={() => startReservation(data.id)}
+          >
+            <button>Start</button>
           </a>
         </Space>
       ),

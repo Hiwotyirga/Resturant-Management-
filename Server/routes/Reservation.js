@@ -3,8 +3,7 @@ const router = express.Router();
 const { validateToken } = require("../middlewares/Authmiddleware");
 
 const { Users, Reservation } = require("../models");
-// const { Status } = require("../models");
-// Modify your reservation GET endpoint in your Express.js server
+
 router.get("/user", validateToken, async (req, res) => {
   try {
     const userId = req.user.id;
@@ -23,7 +22,6 @@ router.get("/user", validateToken, async (req, res) => {
   }
 });
 
-
 router.get("/", async (req, res) => {
   try {
     const reservations = await Reservation.findAll({
@@ -39,6 +37,7 @@ router.get("/", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
 router.post("/", validateToken, async (req, res) => {
   const { name, id } = req.user;
   const { PhoneNumber, Date, Time, NumberOfGuest, Selection } = req.body;
@@ -55,56 +54,46 @@ router.post("/", validateToken, async (req, res) => {
 
   res.json(newReservation);
 });
-router.put("/userdata", validateToken,async (req, res) => {
+
+router.put("/userdata", validateToken, async (req, res) => {
   const { name, id } = req.user;
+  const { PhoneNumber, Date, Time, NumberOfGuest, Selection } = req.body;
+  const updatedReservation = { PhoneNumber, Date, Time, NumberOfGuest, Selection };
 
-  const { PhoneNumber,Date,Time,NumberOfGuest,Selection } = req.body;
-
-  const updatedReservation = {PhoneNumber,Date,Time,NumberOfGuest,Selection };
-
-  await Reservation.update(updatedReservation, { where: { userId:id } });
-
+  await Reservation.update(updatedReservation, { where: { userId: id } });
 
   res.json(updatedReservation);
 });
-router.delete("/delete",validateToken, async (req, res) => {
-  const {id}=req.user
+
+router.delete("/delete", validateToken, async (req, res) => {
+  const { id } = req.user;
   await Reservation.destroy({
     where: {
-      userId:id,
+      userId: id,
     },
   });
-  res.json("Delete sucessfully");
+  res.json("Delete successfully");
 });
-// router.put("/:reservationId", async (req, res) => {
-//   const reservationId = req.params.reservationId;
-//   const { TableNumber } = req.body; 
 
-//   const reservation = await Reservation.findByPk(reservationId);
+router.put("/table/:id", async (req, res) => {
+  const reservationId = req.params.id;
+  const { TableNumber } = req.body;
 
-//   if (!reservation) {
-//     return res.status(404).json({ error: "Reservation not found" });
-//   }
-//   await Reservation.update({ TableNumber }, { where: { id: reservationId } });
-//   const updatedReservation = await Reservation.findByPk(reservationId);
-
-//   res.json(updatedReservation);
-// });
-
-router.put("/table", async (req, res) => {
-  const { newTable, id } = req.body;
   try {
-    const reservation = await Reservation.findByPk(id);
+    const reservation = await Reservation.findByPk(reservationId);
+
     if (!reservation) {
       return res.status(404).json({ error: "Reservation not found" });
     }
-    await reservation.update({ TableNumber: newTable });
-    res.json(newTable);
+    reservation.TableNumber = TableNumber;
+    await reservation.save();
+    res.json(reservation);
   } catch (error) {
-    console.error(error);
+    console.error("Table update error:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
 router.put("/comfirm/:id", async (req, res) => {
   const { id } = req.params;
 
@@ -114,18 +103,25 @@ router.put("/comfirm/:id", async (req, res) => {
     return res.status(404).json({ error: "Reservation not found" });
   }
 
-  confirm.Status = "comfirm";
+  confirm.Status = "confirm";
   await confirm.save();
 
   res.json("Success");
 });
 
-// router.put("/update", async (req, res) => {
-//   const { newreservation, id } = req.body;
-//   await Reservation.update({ update: newreservation }, { where: { id: id } });
-//   res.json(newreservation);
-// });
+router.put("/start/:id", async (req, res) => {
+  const { id } = req.params;
 
+  const start = await Reservation.findByPk(id);
 
+  if (!start) {
+    return res.status(404).json({ error: "Reservation not found" });
+  }
+
+  start.Started = "start";
+  await start.save();
+
+  res.json("Success");
+});
 
 module.exports = router;
