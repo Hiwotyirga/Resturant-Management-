@@ -82,15 +82,13 @@ const Staff = () => {
             }
             return reservation;
           });
-          
         });
-        
       })
       .catch((error) => {
         console.error("Table update error:", error);
       });
   };
-  const  startReservation = (reservationId) => {
+  const startReservation = (reservationId) => {
     axios
       .put(`http://localhost:9000/reservation/start/${reservationId}`)
       .then(() => {
@@ -99,7 +97,7 @@ const Staff = () => {
         setReservations((prevReservations) => {
           return prevReservations.map((reservation) => {
             if (reservation.id === reservationId) {
-              return { ...reservation, Startrd: "start" };
+              return { ...reservation, Start: "start" };
             }
             return reservation;
           });
@@ -110,7 +108,6 @@ const Staff = () => {
         console.error("start error:", error);
       });
   };
-
 
   const columns = [
     {
@@ -152,14 +149,10 @@ const Staff = () => {
           <a onClick={() => edittable(data.id)}>
             <EditOutlined />
           </a>
-          <a
-          onClick={() => confirmReservation(data.id)}
-          >
+          <a onClick={() => confirmReservation(data.id)}>
             <button>Comform</button>
           </a>
-          <a
-          onClick={() => startReservation(data.id)}
-          >
+          <a onClick={() => startReservation(data.id)}>
             <button>Start</button>
           </a>
         </Space>

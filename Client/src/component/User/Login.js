@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link, unstable_HistoryRouter, useNavigate } from "react-router-dom";
 import axios from "axios";
-// import "./lo/gin.css";
-import * as yup from "yup";
+import './form.css'
+
 
 function Login() {
   const [nameReg, setNameReg] = useState("");
@@ -28,56 +28,57 @@ function Login() {
       });
   };
 
-  const validationSchema = yup.object().shape({
-    name: yup.string().required(),
-    email: yup.string().required(),
-    password: yup.string().required(),
-  });
-
   return (
-    <div className="Box">
-      <form
-        onSubmit={handdlesubmit}
-        className="Body"
-        validationSchema={validationSchema}
-      >
+    <div className="box">
+      <form onSubmit={handdlesubmit} className="">
+        <h1>Login</h1>
+        <label>Name</label>
         <input
           type="text"
           placeholder="name"
+          
           onChange={(e) => {
             setNameReg(e.target.value);
           }}
           className="input"
         />
+        
         <br />
+        <label>Email</label>
         <input
           type="email"
           placeholder="email"
+          
           onChange={(e) => {
             setEmailReg(e.target.value);
           }}
           className="input"
         />
+        
         <br />
+        <label>Password</label>
         <input
           type="password"
           placeholder="password"
+          errorMessage="password should be 4-16 characters"
           onChange={(e) => {
-            setPasswordReg(e.target.value);
+            setPasswordReg(e.target.value)
           }}
           className="input"
         />
+      
         <br />
         <button type="submit" className="button">
           Login
         </button>
+        <p className="input">OR</p>
+
+<Link to="/register" className="">
+  Register
+</Link>
       </form>
       <br />
-      <p className="input">OR</p>
-
-      <Link to="/register" className="input">
-        Register
-      </Link>
+     
     </div>
   );
 }

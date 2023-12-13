@@ -30,7 +30,7 @@ module.exports = (Sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    Started: {
+    Start: {
       type: DataTypes.STRING,
       allowNull: true,
     },

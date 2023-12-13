@@ -1,72 +1,75 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-// import "./login.css";
-import * as yup from "yup";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import "./register.css";
 
 function Register() {
   const nav = useNavigate();
-  const [value, setValue] = useState({
+
+  const initialValue = {
     name: "",
     email: "",
     password: "",
-  });
-
-  // useEffect(() => {
-  //   axios.get("http://localhost:9000/users").then((response) => {
-  //     console.log(response);
-  //   });
-  // }, []);
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    axios.post("http://localhost:9000/users", value).then((response) => {
-      console.log(response.data);
-      nav("/");
-    });
   };
-  const validationSchema = yup.object().shape({
-    name: yup.string().required(),
-    email: yup.string().required(),
-    password: yup.string().required(),
+
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().min(3).max(15).required(),
+    email: Yup.string().required(),
+    password: Yup.string().min(8).max(18).required("You must input password"),
   });
+
+  const handleSubmit = (data) => {
+    console.log("Submitting:", data);
+
+    axios
+      .post("http://localhost:9000/users", data)
+      .then((response) => {
+        console.log("API Response:", response.data);
+        nav("/");
+      })
+      .catch((error) => {
+        console.error("API Error:", error);
+      });
+  };
 
   return (
-    <div className="Box">
-      <form
-        className="Body"
+    <div className="box">
+      <Formik
+        initialValues={initialValue}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
-        <input
-          type="text"
-          placeholder="name"
-          onChange={(e) => setValue({ ...value, name: e.target.value })}
-          className="input"
-        />
-        <br />
-
-        <input
-          type="email"
-          placeholder="email"
-          onChange={(e) => setValue({ ...value, email: e.target.value })}
-          className="input"
-        />
-        <br />
-
-        <input
-          type="password"
-          placeholder="password"
-          onChange={(e) => setValue({ ...value, password: e.target.value })}
-          className="input"
-        />
-        <br />
-
-        <button type="submit" className="button">
-          Register
-        </button>
-      </form>
+        <Form>
+          <h1>Login</h1>
+          <ErrorMessage name="name" component="span" />
+          <Field
+            autoComplete="off"
+            name="name"
+            placeholder="name"
+            style={{ marginBottom: "10px" }} // Add margin-bottom for spacing
+          />
+          <ErrorMessage name="email" component="span" />
+          <Field
+            autoComplete="off"
+            name="email"
+            placeholder="email"
+            style={{ marginBottom: "10px" }} // Add margin-bottom for spacing
+          />
+          <ErrorMessage name="password" component="span" />
+          <Field
+            autoComplete="off"
+            name="password"
+            placeholder="password"
+            style={{ marginBottom: "10px" }} // Add margin-bottom for spacing
+          />
+          <button type="submit" className="bg-primary">
+            Submit
+          </button>
+          
+        </Form>
+      </Formik>
     </div>
   );
 }

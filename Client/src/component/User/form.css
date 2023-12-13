@@ -1,0 +1,42 @@
+.box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: linear-gradient(rgba(255, 255, 255, 07), rgba(255, 255, 255, 0.3)),
+    url('https://tse3.mm.bing.net/th?id=OIP.oRrP8UuKNXMvqHyrA7uJfAHaEK&pid=Api&P=0&h=220');
+  background-size: cover; 
+  background-position: center;
+}
+.input {
+  padding: 10px;
+  margin: 10px 0px;
+}
+form {
+  background-color: white;
+  padding: 60px 60px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  
+};
+button {
+  width: 100%;
+  height: 50px;
+  padding: 10px;
+  border: none;
+  background-color: purple;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+h1{
+    color: purple;
+    text-align: center;
+}
+
+Field{
+
+}

@@ -5,7 +5,7 @@
 //;
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./register.css";
+
 import axios from "axios";
 // import { unstable_HistoryRouter } from "react-router-dom";
 
@@ -59,7 +59,7 @@ const RegisterStaff = () => {
           onChange={onChange}
         />
         <br />
-        <button className="button">Register</button>
+        <button  type="submit"className="button">Register</button>
       </form>
     </div>
   );

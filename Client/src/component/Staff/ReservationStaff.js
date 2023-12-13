@@ -87,7 +87,6 @@ const ReservationStaff = () => {
       case "3":
         return <Staff />;
       case "4":
-        
         return <div>Order Content</div>;
       default:
         return null;

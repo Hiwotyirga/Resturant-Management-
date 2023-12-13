@@ -16,7 +16,7 @@
 //     axios.post("http://localhost:9000/staff/login",value).then((res)=>{
 //       alert("succsess fully")
 //       hist("/registerstaff")
-//     })     
+//     })
 //   }
 
 //   return (
@@ -68,22 +68,20 @@
 // }
 
 // export default LoginStaff;
-import React from 'react'
-import { useState } from 'react'
-import "./register.css"
-import axios from 'axios'
-import { Form } from 'antd'
-import { useNavigate ,Link } from 'react-router-dom'
+import React from "react";
+import { useState } from "react";
 
+import axios from "axios";
+import { Form } from "antd";
+import { useNavigate, Link } from "react-router-dom";
 
 const LoginStaff = () => {
-  const hist=useNavigate();
-  const [value,setValue]=useState({
-    name:"",
-    email:"",
-    password:""
-
-  })
+  const hist = useNavigate();
+  const [value, setValue] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
   const onChange = (e) => {
     const { name, value } = e.target;
     setValue((prevValue) => ({
@@ -91,44 +89,43 @@ const LoginStaff = () => {
       [name]: value,
     }));
   };
-  const onSubmit=(e)=>{
+  const onSubmit = (e) => {
     e.preventDefault();
     axios.post("http://localhost:9000/staff/login", value).then(() => {
       alert("you did it");
       // console.log(res.data)
       hist("/staff");
     });
-     
-  }
+  };
 
   return (
-    <div className='Box'>
+    <div className="Box">
       <Form className="body" onSubmit={onSubmit}>
         <input
-        type='text'
-        name='name'
-        placeholder='please enter your name'
-        className='input'
-        onChange={onChange}
-        
-        /><br/>
-         <input
-        type='email'
-        name='email'
-        placeholder='please enter your email'
-        className='input'
-        onChange={onChange}
-        
-        /><br/>
-         <input
-        type='password'
-        name='password'
-        placeholder='please enter your password'
-        className='input'
-        onChange={onChange}
-        
-        /><br/>
-       <button type="submit" className="button">
+          type="text"
+          name="name"
+          placeholder="please enter your name"
+          className="input"
+          onChange={onChange}
+        />
+        <br />
+        <input
+          type="email"
+          name="email"
+          placeholder="please enter your email"
+          className="input"
+          onChange={onChange}
+        />
+        <br />
+        <input
+          type="password"
+          name="password"
+          placeholder="please enter your password"
+          className="input"
+          onChange={onChange}
+        />
+        <br />
+        <button type="submit" className="button">
           Login
         </button>
       </Form>
@@ -139,8 +136,7 @@ const LoginStaff = () => {
         Register
       </Link>
     </div>
-  )
-}
+  );
+};
 
-export default LoginStaff
-
+export default LoginStaff;

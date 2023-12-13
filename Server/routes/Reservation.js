@@ -13,7 +13,7 @@ router.get("/user", validateToken, async (req, res) => {
         model: Users,
         attributes: ["name"],
       },
-    });
+    });  
 
     res.json(reservations);
   } catch (error) {
@@ -21,6 +21,11 @@ router.get("/user", validateToken, async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+router.get('/confirm/count',async(req,res)=>{
+  const confirmcount=Reservation.filter(Reservation=Reservation.Status==='confirm').length;
+  res.json(confirmcount)
+  
+})
 
 router.get("/", async (req, res) => {
   try {
@@ -118,10 +123,11 @@ router.put("/start/:id", async (req, res) => {
     return res.status(404).json({ error: "Reservation not found" });
   }
 
-  start.Started = "start";
+  start.Start = "start";
   await start.save();
 
   res.json("Success");
 });
+
 
 module.exports = router;
