@@ -1,66 +1,3 @@
-// import React, { useState, useEffect, useParams } from "react";
-// import axios from "axios";
-
-// const StaffList = () => {
-//   const [reservations, setReservations] = useState([]);
-
-//   const { id } = useParams();
-
-//   useEffect(() => {
-//     // Fetch reservations when the component mounts
-//     axios
-//       .get(`http://localhost:9000/reservation/user?userId=${id}`, {
-//         headers: {
-//           Authorization: "Bearer " + sessionStorage.getItem("accessToken"),
-//         },
-//       })
-//       .then((response) => {
-//         setReservations(response.data);
-//       })
-//       .catch((error) => {
-//         console.error("Error fetching reservations:", error);
-//       });
-//   }, [id]);
-//   const deleteReservation = (id) => {
-//     axios
-//       .delete(`http://localhost:9000/reservation/${id}`)
-//       .then(() => {
-//         alert("Reservation deleted successfully");
-//         // Refresh the reservation list after successful deletion
-//         axios.get("http://localhost:9000/reservation").then((response) => {
-//           setReservations(response.data);
-//         });
-//       })
-//       .catch((error) => {
-//         console.error("Error deleting reservation:", error);
-//         alert("Error deleting reservation. Please try again.");
-//       });
-//   };
-
-//   const editReservation = (id) => {
-//     // Add your edit reservation logic here
-//   };
-
-//   return (
-//     // <div>
-//       //{reservations.map((reservation) => (
-//         // <div key={reservation.id} className="reservation">
-//           // <div>{reservation.User.name}</div>
-//           // <div>{reservation.PhoneNumber}</div>
-//           // <div>{reservation.Date}</div>
-//           // <div>{reservation.Time}</div>
-//           // <div>{reservation.NumberOfGuest}</div>
-//           // <div>{reservation.Selection}</div>
-
-//           // </div>
-//         // </div>
-//       // ))}
-//     // </div>
-//     <div>
-//   );
-// };
-
-// export default StaffList;
 import React, { useState, useEffect } from "react";
 import {
   Card,
@@ -180,7 +117,8 @@ const StaffList = () => {
         } else {
           // console.log(response.data);
           alert("success");
-        } axios
+        }
+        axios
           .get(`http://localhost:9000/reservation/user`, {
             headers: {
               Authorization: "Bearer " + sessionStorage.getItem("accessToken"),
@@ -192,21 +130,22 @@ const StaffList = () => {
       });
   };
 
-  const deleteReservation = () => {
+  const cancleReservation = (reservationId) => {
     axios
-      .delete(`http://localhost:9000/reservation/delete`, {
-        headers: {
-          Authorization: "Bearer " + sessionStorage.getItem("accessToken"),
-        },})
+      .put(`http://localhost:9000/reservation/cancle/${reservationId}`)
       .then(() => {
-        alert("Reservation deleted successfully");
-        axios.get("http://localhost:9000/reservation").then((response) => {
-          setReservations(response.data);
+        setReservations((prevReservations) => {
+          return prevReservations.map((reservation) => {
+            if (reservation.id === reservationId) {
+              return { ...reservation, Status: "cancle" };
+            }
+            return reservation;
+          });
         });
+        alert("Reservation cancle successfully!");
       })
       .catch((error) => {
-        console.error("Error deleting reservation:", error);
-        alert("Error deleting reservation. Please try again.");
+        console.error("cancle error:", error);
       });
   };
 
@@ -225,10 +164,17 @@ const StaffList = () => {
                 <p>phone Number: {reservation.PhoneNumber}</p>
                 <p>Number of Guests: {reservation.NumberOfGuest}</p>
                 <p>Selection: {reservation.Selection}</p>
+                <p>Status: {reservation.Status}</p>
               </Space>
               <div style={{ display: "flex", marginLeft: "30px" }}>
-                <div onClick={deleteReservation}>
-                  <DeleteOutlined />
+                <div>
+                  {/* <DeleteOutlined /> */}
+                  <button
+                    style={{ backgroundColor: "red", color: "black" }}
+                    onClick={cancleReservation}
+                  >
+                    Cancle
+                  </button>
                 </div>
                 <div onClick={showModal}>
                   <EditOutlined />

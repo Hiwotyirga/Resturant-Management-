@@ -1,19 +1,33 @@
 const express = require("express");
 const router = express.Router();
 const { validateToken } = require("../middlewares/Authmiddleware");
-
+const { Op } = require("sequelize");
 const { Users, Reservation } = require("../models");
+//for status count 
+router.get("/count",async(req,res)=>{
+  const confirmcount=await Reservation.count({
+    where:{
+      Status:"confirm"
+    }
+  })
+  const startedcount=await Reservation.count({
+    where:{
+      Status:"started"
+    }
+  })
+  res.json(confirmcount,startedcount)
+})
 
 router.get("/user", validateToken, async (req, res) => {
   try {
     const userId = req.user.id;
     const reservations = await Reservation.findAll({
-      where: { userId: userId },
+      where: { userId: userId, Status: { [Op.not]: "cancle" } },
       include: {
         model: Users,
         attributes: ["name"],
       },
-    });  
+    });
 
     res.json(reservations);
   } catch (error) {
@@ -21,15 +35,42 @@ router.get("/user", validateToken, async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-router.get('/confirm/count',async(req,res)=>{
-  const confirmcount=Reservation.filter(Reservation=Reservation.Status==='confirm').length;
-  res.json(confirmcount)
-  
-})
 
+// to get all confirm reservarion
+router.get("/confirm", async (req, res) => {
+  try {
+    const reservarion = await Reservation.findAll({
+      where: { Status: "confirm" },
+      include: {
+        model: Users,
+        attributes: ["name"],
+      },
+    });
+    res.json(reservarion);
+  } catch (error) {
+    console.error(error);
+  }
+});
+// to get all started reservarion
+router.get("/started", async (req, res) => {
+  try {
+    const reservarion = await Reservation.findAll({
+      where: { Status: "started" },
+      include: {
+        model: Users,
+        attributes: ["name"],
+      },
+    });
+    res.json(reservarion);
+  } catch (error) {
+    console.error(error);
+  }
+});
+// get all new reservartion
 router.get("/", async (req, res) => {
   try {
     const reservations = await Reservation.findAll({
+      where: { Status: "new" },
       include: {
         model: Users,
         attributes: ["name"],
@@ -63,21 +104,25 @@ router.post("/", validateToken, async (req, res) => {
 router.put("/userdata", validateToken, async (req, res) => {
   const { name, id } = req.user;
   const { PhoneNumber, Date, Time, NumberOfGuest, Selection } = req.body;
-  const updatedReservation = { PhoneNumber, Date, Time, NumberOfGuest, Selection };
+  const updatedReservation = {
+    PhoneNumber,
+    Date,
+    Time,
+    NumberOfGuest,
+    Selection,
+  };
 
   await Reservation.update(updatedReservation, { where: { userId: id } });
 
   res.json(updatedReservation);
 });
-
-router.delete("/delete", validateToken, async (req, res) => {
+router.put("/cancle/", validateToken,async (req, res) => {
   const { id } = req.user;
-  await Reservation.destroy({
-    where: {
-      userId: id,
-    },
-  });
-  res.json("Delete successfully");
+  const {Status}=req.body;
+  cancle.Status = "cancle";
+  await cancle.save();
+
+  res.json("Success");
 });
 
 router.put("/table/:id", async (req, res) => {
@@ -114,6 +159,21 @@ router.put("/comfirm/:id", async (req, res) => {
   res.json("Success");
 });
 
+// router.put("/cancle/:id", async (req, res) => {
+//   const { id } = req.params;
+
+//   const cancle = await Reservation.findByPk(id);
+
+//   if (!cancle) {
+//     return res.status(404).json({ error: "Reservation not found" });
+//   }
+
+//   cancle.Status = "cancle";
+//   await cancle.save();
+
+//   res.json("Success");
+// });
+
 router.put("/start/:id", async (req, res) => {
   const { id } = req.params;
 
@@ -123,11 +183,10 @@ router.put("/start/:id", async (req, res) => {
     return res.status(404).json({ error: "Reservation not found" });
   }
 
-  start.Start = "start";
+  start.Status = "started";
   await start.save();
 
   res.json("Success");
 });
-
 
 module.exports = router;

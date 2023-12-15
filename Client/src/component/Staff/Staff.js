@@ -39,8 +39,6 @@ const Staff = () => {
     axios
       .put(`http://localhost:9000/reservation/comfirm/${reservationId}`)
       .then(() => {
-        // If you want to update the state with the new reservation status, you can do it here
-        // For example, update the state with the modified reservation
         setReservations((prevReservations) => {
           return prevReservations.map((reservation) => {
             if (reservation.id === reservationId) {
@@ -56,14 +54,10 @@ const Staff = () => {
       });
   };
 
-  const handleCancel = () => {
-    setIsModalVisible(false);
-    setValue("");
-  };
+  
   const edittable = (reservationId) => {
     const newTable = prompt("Enter new table number");
     if (!newTable) {
-      // User cancelled the prompt
       return;
     }
 
@@ -73,8 +67,7 @@ const Staff = () => {
       })
       .then((response) => {
         console.log("Table update response:", response.data);
-        // If you want to update the state with the new reservation data, you can do it here
-        // For example, update the state with the modified reservation
+      
         setReservations((prevReservations) => {
           return prevReservations.map((reservation) => {
             if (reservation.id === reservationId) {
@@ -92,12 +85,10 @@ const Staff = () => {
     axios
       .put(`http://localhost:9000/reservation/start/${reservationId}`)
       .then(() => {
-        // If you want to update the state with the new reservation status, you can do it here
-        // For example, update the state with the modified reservation
         setReservations((prevReservations) => {
           return prevReservations.map((reservation) => {
             if (reservation.id === reservationId) {
-              return { ...reservation, Start: "start" };
+              return { ...reservation,Status: "started" };
             }
             return reservation;
           });
@@ -162,21 +153,8 @@ const Staff = () => {
 
   return (
     <div>
-      <h1>Reservation List</h1>
+      <h1> New Reservation List</h1>
       <Table columns={columns} dataSource={reservations} />
-      {/* <Modal
-        title="Update Table Number"
-        visible={IsModalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
-      >
-        <Input
-          type="text"
-          placeholder="Enter Table Number"
-          name="TableNumber"
-          onChange={(e) => setValue({ ...value, TableNumber: e.target.value })}
-        />
-      </Modal> */}
     </div>
   );
 };

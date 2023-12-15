@@ -1,7 +1,4 @@
-import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import axios from "axios";
-import "antd/dist/reset.css";
 import HomePage from "./component/HomePage";
 import Categoriess from "./component/Category";
 import CategoryDetail from "./component/CategoryDetail";
@@ -15,6 +12,9 @@ import RegisterStaff from "./component/Staff/RegisterStaff";
 import StaffList from "./component/User/StaffList";
 import Table from "./component/User/table";
 import Status from "./component/Staff/status";
+import Confirm from "./component/Staff/Confirm";
+import Started from "./component/Staff/Started";
+import Cancled from "./component/Staff/Cancled";
 
 function App() {
   return (
@@ -34,6 +34,9 @@ function App() {
           <Route path="/registerstaff" element={<RegisterStaff />} />
           <Route path="/staffList" element={<StaffList />} />
           <Route path="/status" element={<Status />} />
+          <Route path="/confirm" element={<Confirm />} />
+          <Route path="/started" element={<Started />} />
+          <Route path="/cancle" element={<Cancled />} />
         </Routes>
       </BrowserRouter>
     </div>

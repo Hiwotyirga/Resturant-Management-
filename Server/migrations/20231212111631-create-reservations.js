@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Reservations', {
+    await queryInterface.createTable("Reservations", {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -30,7 +30,8 @@ module.exports = {
       },
       Status: {
         type: Sequelize.STRING,
-        allowNull: true,
+        allowNull: false,
+        defaultValue: "New",
       },
       TableNumber: {
         type: Sequelize.STRING,
@@ -43,11 +44,11 @@ module.exports = {
       userId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Users', // Assuming your Users table is named Users
-          key: 'id',
+          model: "Users", // Assuming your Users table is named Users
+          key: "id",
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
         allowNull: false,
       },
       createdAt: {
@@ -62,6 +63,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Reservations');
+    await queryInterface.dropTable("Reservations");
   },
 };

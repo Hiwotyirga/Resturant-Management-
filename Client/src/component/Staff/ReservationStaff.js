@@ -139,7 +139,7 @@ const ReservationStaff = () => {
       </Sider>
       <Layout>
         <Header
-          style={{ padding: 0, background: colorBgContainer, height: 75 }}
+          style={{ padding: 0, background: colorBgContainer, height: 100 }}
         >
           <div style={{ display: "flex" }}>
             <Button

@@ -1,5 +1,5 @@
 // C:\Users\Hiwi\Resturant-Management-\Server\models\Reservation.js
-module.exports = (Sequelize, DataTypes) => {
+module.exports = (Sequelize, DataTypes, Op, Model) => {
   // const Users = require("./Users");
   const Reservation = Sequelize.define("Reservation", {
     PhoneNumber: {
@@ -24,7 +24,8 @@ module.exports = (Sequelize, DataTypes) => {
     },
     Status: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
+      defaultValue: "New",
     },
     TableNumber: {
       type: DataTypes.STRING,

@@ -42,7 +42,7 @@ function Register() {
         validationSchema={validationSchema}
       >
         <Form>
-          <h1>Login</h1>
+          <h1>Register</h1>
           <ErrorMessage name="name" component="span" />
           <Field
             autoComplete="off"
