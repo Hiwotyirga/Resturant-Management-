@@ -6,11 +6,13 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
 const Staff = () => {
   const [reservations, setReservations] = useState([]);
+  const [reservarionStatus, setReservationStatus] = useState("");
   const [IsModalVisible, setIsModalVisible] = useState(false);
   const [Status, setStatus] = useState([]);
   const [value, setValue] = useState({
     TableNumber: "",
   });
+  const [loading, setLoading] = useState(false);
   // const { Id } = useParams();
 
   const ShowModal = () => {
@@ -19,7 +21,7 @@ const Staff = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:9000/reservation")
+      .get("http://localhost:9000/reservation/list")
       .then((response) => {
         setReservations(response.data);
       })
@@ -54,7 +56,6 @@ const Staff = () => {
       });
   };
 
-  
   const edittable = (reservationId) => {
     const newTable = prompt("Enter new table number");
     if (!newTable) {
@@ -67,7 +68,7 @@ const Staff = () => {
       })
       .then((response) => {
         console.log("Table update response:", response.data);
-      
+
         setReservations((prevReservations) => {
           return prevReservations.map((reservation) => {
             if (reservation.id === reservationId) {
@@ -88,7 +89,7 @@ const Staff = () => {
         setReservations((prevReservations) => {
           return prevReservations.map((reservation) => {
             if (reservation.id === reservationId) {
-              return { ...reservation,Status: "started" };
+              return { ...reservation, Status: "started" };
             }
             return reservation;
           });
@@ -100,6 +101,19 @@ const Staff = () => {
       });
   };
 
+  const handleStatusChange = (newStatus) => {
+    axios
+      .post("http://localhost:9000/reservation/update-status", {
+        Stuation: newStatus, // Make sure the field name matches what the server expects
+      })
+      .then((response) => {
+        setReservationStatus(newStatus);
+        console.log("Reservation status updated to:", newStatus);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
   const columns = [
     {
       title: "Name",
@@ -153,6 +167,28 @@ const Staff = () => {
 
   return (
     <div>
+      <div style={{ margin: "20px 10px 10px 750px", justifyContent: "end" }}>
+      <p>{reservarionStatus}</p>
+        <button
+          onClick={() => handleStatusChange("open")}
+          disabled={loading || reservarionStatus === "open"}
+          className="bg-primary"
+          style={{ margin: "10px" }}
+        >
+          Open Reservation
+        </button>
+       
+        <button
+          onClick={() => {
+            handleStatusChange("closed");
+          }}
+          disabled={loading || reservarionStatus === "closed"}
+          className="bg-danger"
+          style={{ margin: "10px" }}
+        >
+          Close Reservation
+        </button>
+      </div>
       <h1> New Reservation List</h1>
       <Table columns={columns} dataSource={reservations} />
     </div>

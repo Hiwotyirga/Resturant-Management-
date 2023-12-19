@@ -4,8 +4,8 @@ import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import "./register.css";
-
-function Register() {
+ 
+function Register() { 
   const nav = useNavigate();
 
   const initialValue = {
@@ -67,7 +67,6 @@ function Register() {
           <button type="submit" className="bg-primary">
             Submit
           </button>
-          
         </Form>
       </Formik>
     </div>

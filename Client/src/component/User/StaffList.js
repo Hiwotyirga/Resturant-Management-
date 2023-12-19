@@ -22,6 +22,7 @@ const StaffList = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [open, setOpen] = useState(false);
   const [postAll, setPostAll] = useState([]);
+  const [reservation, setReservation] = useState([]);
   const [values, setValues] = useState({
     PhoneNumber: "",
     Date: "",
@@ -130,22 +131,30 @@ const StaffList = () => {
       });
   };
 
-  const cancleReservation = (reservationId) => {
+  const cancelReservation = (reservationId) => {
     axios
-      .put(`http://localhost:9000/reservation/cancle/${reservationId}`)
+      .post(
+        "http://localhost:9000/reservation/cancel",
+        { reservationId },
+        {
+          headers: {
+            Authorization: "Bearer " + sessionStorage.getItem("accessToken"),
+          },
+        }
+      )
       .then(() => {
-        setReservations((prevReservations) => {
+        setReservation((prevReservations) => {
           return prevReservations.map((reservation) => {
             if (reservation.id === reservationId) {
-              return { ...reservation, Status: "cancle" };
+              return { ...reservation, Status: "cancel" };
             }
             return reservation;
           });
         });
-        alert("Reservation cancle successfully!");
+        alert("Reservation cancel successfully!");
       })
       .catch((error) => {
-        console.error("cancle error:", error);
+        console.error("start error:", error);
       });
   };
 
@@ -171,7 +180,7 @@ const StaffList = () => {
                   {/* <DeleteOutlined /> */}
                   <button
                     style={{ backgroundColor: "red", color: "black" }}
-                    onClick={cancleReservation}
+                    onClick={() => cancelReservation(reservation.id)}
                   >
                     Cancle
                   </button>

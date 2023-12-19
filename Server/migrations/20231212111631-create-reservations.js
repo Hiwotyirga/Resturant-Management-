@@ -33,6 +33,20 @@ module.exports = {
         allowNull: false,
         defaultValue: "New",
       },
+      // Stuation: {
+      //   type: Sequelize.STRING,
+      //   allowNull: false,
+      //   enum: ["open", "close"],
+      //   defaultValue: "open",
+      // },
+      ActualArrivalTime: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      Reservation: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       TableNumber: {
         type: Sequelize.STRING,
         allowNull: true,

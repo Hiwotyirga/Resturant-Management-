@@ -1,23 +1,26 @@
 const express = require("express");
 const router = express.Router();
 const { validateToken } = require("../middlewares/Authmiddleware");
-const { Op } = require("sequelize");
+const { Op, where } = require("sequelize");
 const { Users, Reservation } = require("../models");
-//for status count 
-router.get("/count",async(req,res)=>{
-  const confirmcount=await Reservation.count({
-    where:{
-      Status:"confirm"
-    }
-  })
-  const startedcount=await Reservation.count({
-    where:{
-      Status:"started"
-    }
-  })
-  res.json(confirmcount,startedcount)
-})
-
+const ReservationController = require("../controllers/ReservationController");
+// const ReservationStatus = require("../models/reservationStatus");
+const { reservationStatus } = require("../models");
+//for status count
+router.get("/count", async (req, res) => {
+  const confirmcount = await Reservation.count({
+    where: {
+      Status: "confirm",
+    },
+  });
+  const startedcount = await Reservation.count({
+    where: {
+      Status: "started",
+    },
+  });
+  res.json(confirmcount, startedcount);
+});
+//user reservation list with validateToken
 router.get("/user", validateToken, async (req, res) => {
   try {
     const userId = req.user.id;
@@ -36,7 +39,7 @@ router.get("/user", validateToken, async (req, res) => {
   }
 });
 
-// to get all confirm reservarion
+//  from admin page to get all confirm reservarion
 router.get("/confirm", async (req, res) => {
   try {
     const reservarion = await Reservation.findAll({
@@ -51,7 +54,7 @@ router.get("/confirm", async (req, res) => {
     console.error(error);
   }
 });
-// to get all started reservarion
+//  from admin page to get all started reservarion
 router.get("/started", async (req, res) => {
   try {
     const reservarion = await Reservation.findAll({
@@ -66,25 +69,63 @@ router.get("/started", async (req, res) => {
     console.error(error);
   }
 });
-// get all new reservartion
-router.get("/", async (req, res) => {
-  try {
-    const reservations = await Reservation.findAll({
-      where: { Status: "new" },
-      include: {
-        model: Users,
-        attributes: ["name"],
-      },
-    });
+//  from admin page get all new reservartion
+router.get("/list", async (req, res) => {
+  const reservations = await Reservation.findAll({
+    where: { Status: "new" },
+    include: {
+      model: Users,
+      attributes: ["name"],
+    },
+  });
 
-    res.json(reservations);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
+  res.json(reservations);
+});
+router.get("/", async (req, res) => {
+  const reservations = await Reservation.findAll({
+    include: {
+      model: Users,
+      attributes: ["name"],
+    },
+  });
+
+  res.json(reservations);
 });
 
-router.post("/", validateToken, async (req, res) => {
+// Admin panel
+
+let ReservationStatus = "";
+const checkReservationStatus = async (req, res, next) => {
+  const status = await reservationStatus.findOne();
+  ReservationStatus = status ? status.Stuation : "";
+  if (ReservationStatus === "closed") {
+    return res.json({ message: "Reservation system is closed." });
+  } else {
+    next();
+  }
+};
+
+router.post("/update-status", async (req, res) => {
+  const { Stuation } = req.body;
+
+  const statusRecord = await reservationStatus.findOne();
+  if (statusRecord) {
+    await statusRecord.update({ Stuation: Stuation });
+  } else {
+    await reservationStatus.create({ Stuation: Stuation });
+  }
+
+  ReservationStatus = Stuation;
+  res.json({ message: `Reservation system status updated to ${Stuation}.` });
+});
+
+// Add this route to your backend server
+
+router.get("/status", checkReservationStatus, (req, res) => {
+  res.json({ status: ReservationStatus });
+});
+
+router.post("/", validateToken, checkReservationStatus, async (req, res) => {
   const { name, id } = req.user;
   const { PhoneNumber, Date, Time, NumberOfGuest, Selection } = req.body;
   const newReservation = {
@@ -101,6 +142,7 @@ router.post("/", validateToken, async (req, res) => {
   res.json(newReservation);
 });
 
+//to update reservation
 router.put("/userdata", validateToken, async (req, res) => {
   const { name, id } = req.user;
   const { PhoneNumber, Date, Time, NumberOfGuest, Selection } = req.body;
@@ -116,14 +158,26 @@ router.put("/userdata", validateToken, async (req, res) => {
 
   res.json(updatedReservation);
 });
-router.put("/cancle/", validateToken,async (req, res) => {
-  const { id } = req.user;
-  const {Status}=req.body;
-  cancle.Status = "cancle";
-  await cancle.save();
+router.put("/cancel/", validateToken, async (req, res) => {
+  try {
+    const { id } = req.user;
+    const resource = await Reservation.findOne({ where: { userId: id } });
 
-  res.json("Success");
+    if (!resource) {
+      return res.status(404).json({ error: "Resource not found" });
+    }
+
+    resource.Status = "cancel";
+    await resource.save();
+
+    res.json({ success: true, message: "Update successful" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 });
+
+//admin to give table for user
 
 router.put("/table/:id", async (req, res) => {
   const reservationId = req.params.id;
@@ -143,7 +197,7 @@ router.put("/table/:id", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-
+//admine to confirm
 router.put("/comfirm/:id", async (req, res) => {
   const { id } = req.params;
 
@@ -174,6 +228,7 @@ router.put("/comfirm/:id", async (req, res) => {
 //   res.json("Success");
 // });
 
+//admin to start
 router.put("/start/:id", async (req, res) => {
   const { id } = req.params;
 
@@ -188,5 +243,24 @@ router.put("/start/:id", async (req, res) => {
 
   res.json("Success");
 });
+
+router.post("/cancel", validateToken, async (req, res) => {
+  const { reservationId } = req.body;
+
+  try {
+    const reservation = await Reservation.findOne({ _id: reservationId });
+    if (reservation) {
+      reservation.Status = "cancel";
+      await reservation.save();
+      res.json(reservation);
+    } else {
+      res.status(404).json({ error: "Reservation not found" });
+    }
+  } catch (error) {
+    console.error("Error cancelling reservation:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 
 module.exports = router;
