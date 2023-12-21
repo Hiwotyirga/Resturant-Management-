@@ -13,6 +13,7 @@ const { Search } = Input;
 const TableManagementSystem = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [open, setOpen] = useState(false);
+  const [count, setCount] = useState(0);
   const [postAll, setPostAll] = useState([]);
   const [reservationStatus, setReservationStatus] = useState("open"); 
   const [values, setValues] = useState({
@@ -79,7 +80,15 @@ const TableManagementSystem = () => {
         if (response.data.error) {
           alert(response.data.error);
         } else {
-          Swal.fire("Reservation","You did it")
+          
+            axios
+              .get("http://localhost:9000/reservation/userValidate-count")
+              .then((res) => {
+                setCount(res.data);
+                Swal.fire("Reservation","You did it")
+              });
+         
+         
           // console.log(response.reservationStatus)
           // alert("seccuss full");
         }

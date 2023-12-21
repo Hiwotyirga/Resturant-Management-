@@ -1,10 +1,13 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { BellOutlined } from '@ant-design/icons';
 
 const NotificationBell = ({ count, onClick }) => {
+  
   return (
     <div style={{ position: 'relative' }} onClick={onClick}>
-      <BellOutlined />
+      
+      <Link to="/staffList"><BellOutlined/></Link>
       {count > 0 && (
         <span
           style={{

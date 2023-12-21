@@ -26,12 +26,13 @@ module.exports = (Sequelize, DataTypes, Op, Model) => {
       allowNull: false,
       defaultValue: "New",
     },
-    // Stuation: {
-    //   type: DataTypes.STRING,
-    //   allowNull: false,
-    //   enum: ["open", "close"],
-    //   defaultValue: "open",
-    // },
+   FeeStatus:{
+    type: DataTypes.STRING,
+    allowNull: true,  
+
+   },
+  
+
     ActualArrivalTime: {
       type: DataTypes.STRING,
       allowNull: true,  

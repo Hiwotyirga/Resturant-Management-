@@ -1,13 +1,25 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Table, Space, Button, Popover, DatePicker } from "antd";
+import { Table, Space, Button, Popover } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import Swal from "sweetalert2";
+import { useParams } from "react-router-dom";
+// import React from 'react';
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import { TimePicker } from "antd";
 
 const Staff = () => {
   const [reservations, setReservations] = useState([]);
   const [reservarionStatus, setReservationStatus] = useState("");
   const [loading, setLoading] = useState(false);
+  const [selectedTime, setSelectedTime] = useState(null);
+  const [popoverVisible, setPopoverVisible] = useState(false);
+  // const [selectedTime, setSelectedTime] = useState(null);
+  const [time, setTime] = useState({
+    ActualArrivalTime: null,
+  });
+ 
 
   useEffect(() => {
     axios
@@ -19,32 +31,46 @@ const Staff = () => {
         console.error(error);
       });
   }, []);
+  const { reservationId } = useParams;
+  const ShowPopover = () => {
+    setPopoverVisible(true);
+  };
 
+  const closeTimePicker = () => {
+    setPopoverVisible(false);
+  };
+
+  const saveTimepicker = () => {
+    setPopoverVisible(false);
+   if(selectedTime){
+    axios
+    .put(`http://localhost:9000/reservation/actualtime/${reservationId}`, { ActualArrivalTime: selectedTime.format("HH:mm:ss"),})
+    .then((res) => {
+      console.log(res.data);
+    })
+    .catch((error) => {
+      console.error("Error updating actual arrival time:", error);
+    });
+   }
+    else{
+      console.log("error")
+    }
+  };
+  dayjs.extend(customParseFormat);
+  const onChange = (time, timeString) => {
+    console.log(time, timeString);
+  };
   const content = (
     <div>
-      <DatePicker
-        onChange={(date) => {
-          closeDatePicker();
-          // Process the selected date
-        }}
+      <TimePicker
+        onChange={onChange}
+        defaultOpenValue={dayjs("00:00:00", "HH:mm:ss")}
       />
-      <Button onClick={closeDatePicker}>Cancel</Button>
+      <Button onClick={closeTimePicker}>Cancel</Button>
       <button onClick={saveTimepicker}>OK</button>
     </div>
   );
 
-  const promptForDate = () => {
-    // Use setPopoverVisible to control the visibility
-    setPopoverVisible(true);
-
-    const closeDatePicker = () => {
-      setPopoverVisible(false);
-    };
-
-    const saveTimepicker = () => {
-      setPopoverVisible(false);
-      // Add logic to save the selected date
-    };}
   const confirmReservation = (reservationId) => {
     axios
       .put(`http://localhost:9000/reservation/comfirm/${reservationId}`)
@@ -58,7 +84,13 @@ const Staff = () => {
             return reservation;
           });
         });
-        Swal.fire("Confirmed", "Reservation confirmed successfully!");
+        axios
+        .get("http://localhost:9000/reservation/list")
+        .then((response) => {
+          setReservations(response.data);
+          Swal.fire("Confirmed", "Reservation confirmed successfully!");
+        })
+      
       })
       .catch((error) => {
         console.error("Confirmation error:", error);
@@ -67,7 +99,7 @@ const Staff = () => {
 
   const edittable = (reservationId) => {
     const newTable = prompt("Enter new table number");
-    if (newTable !== null && newTable.trim() !== "") {
+    if (!newTable) {
       return;
     }
     axios
@@ -93,11 +125,30 @@ const Staff = () => {
     handleFeeStatusUpdate();
   };
 
-  const handleFeeStatusUpdate = () => {
-    const newFewStatus = prompt(
-      `is the user fee paid? (Type "fee" or "paid")`
-    );
-    
+  const handleFeeStatusUpdate = (reservationId) => {
+    const newFewStatus = prompt(`is the user fee paid? (Type "fee" or "paid")`);
+    if (!newFewStatus) {
+      axios
+        .put(`http://localhost:9000/reservation/feestatus/${reservationId}`, {
+          FeeStatus: newFewStatus,
+        })
+        .then((response) => {
+          console.log("feestatus update response:", response.data);
+
+          setReservations((prevReservations) => {
+            return prevReservations.map((reservation) => {
+              if (reservation.id === reservationId) {
+                return { ...reservation, FeeStatus: newFewStatus };
+              }
+              return reservation;
+            });
+          });
+          Swal.fire("Actual Arival Time", "Success full");
+        })
+        .catch((error) => {
+          console.error("Table update error:", error);
+        });
+    }
   };
 
   const startReservation = (reservationId) => {
@@ -113,27 +164,33 @@ const Staff = () => {
             return reservation;
           });
         });
-        Swal.fire("Started", "Reservation Started successfully!");
+        axios
+        .get("http://localhost:9000/reservation/list")
+        .then((response) => {
+          setReservations(response.data);
+          Swal.fire("Started", "Reservation Started successfully!");
+        })
+       
       })
       .catch((error) => {
         console.error("start error:", error);
       });
   };
 
-  const handleStatusChange = (newStatus) => {
-    axios
-      .post("http://localhost:9000/reservation/update-status", {
-        Stuation: newStatus,
-      })
-      .then((response) => {
-        setReservationStatus(newStatus);
-        console.log("Reservation status updated to:", newStatus);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-  
+  // const handleStatusChange = (newStatus) => {
+  //   axios
+  //     .post("http://localhost:9000/reservation/update-status", {
+  //       Stuation: newStatus,
+  //     })
+  //     .then((response) => {
+  //       setReservationStatus(newStatus);
+  //       console.log("Reservation status updated to:", newStatus);
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  // };
+
   const columns = [
     {
       title: "Name",
@@ -172,6 +229,17 @@ const Staff = () => {
       key: "TableNumber",
     },
     {
+      title: "FeeStatus",
+      dataIndex: "FeeStatus",
+      key: "FeeStatus",
+    },
+    {
+      title: "ActualArrivalTime",
+      dataIndex: "ActualArrivalTime",
+      key: "ActualArrivalTime",
+    },
+
+    {
       title: "Action",
       key: "action",
       render: (_, data) => (
@@ -185,17 +253,9 @@ const Staff = () => {
           <a onClick={() => startReservation(data.id)}>
             <button>Start</button>
           </a>
-          <Popover
-            title="Select Reservation Date"
-            content={content}
-            trigger="click"
-            visible={popoverVisible}
-            onVisibleChange={(visible) => {
-              if (!visible) closeDatePicker();
-            }}
-          >
-            <Button>Arrival Time</Button>
-          </Popover>
+          <a onClick={ShowPopover}>
+            <button>Arrival Time</button>
+          </a>
         </Space>
       ),
     },
@@ -226,6 +286,17 @@ const Staff = () => {
       </div>
       <h1>New Reservation List</h1>
       <Table columns={columns} dataSource={reservations} />
+      <div>
+        <Popover
+          title="Select Arrival Time"
+          content={content}
+          trigger="click"
+          visible={popoverVisible}
+          onVisibleChange={(visible) => {
+            if (!visible) closeTimePicker();
+          }}
+        ></Popover>
+      </div>
     </div>
   );
 };

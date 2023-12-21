@@ -10,7 +10,6 @@ import {
 import { Layout, Menu, Button, Input, theme, ConfigProvider } from "antd";
 import Categoriess from "./Category";
 import { notification } from "antd";
-
 import CategoryDetail from "./CategoryDetail";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -95,12 +94,24 @@ const HomePage = () => {
     }
   };
 
+  const fetchReservationCount = async () => {
+    try {
+      const response = await axios.get("http://localhost:9000/reservation/userValidate-count");
+      setCount(response.data);
+    } catch (error) {
+      console.error("Error fetching reservation count:", error);
+    }
+  };
+
   useEffect(() => {
-    axios
-      .get("http://localhost:9000/reservation/userValidate-count")
-      .then((res) => {
-        setCount(res.data);
-      });
+    // Fetch initial reservation count
+    fetchReservationCount();
+
+    // Set up polling interval (e.g., every 10 seconds)
+    const intervalId = setInterval(fetchReservationCount, 10000);
+
+    // Clean up interval on component unmount
+    return () => clearInterval(intervalId);
   }, []);
 
   const handleBellClick = () => {
@@ -110,18 +121,15 @@ const HomePage = () => {
       .put("http://localhost:9000/reservation/mark-reservations-as-read")
       .then(() => {
         console.log("Marked as read successfully");
-        // Update the count locally to 0
+
+        navigate("/staffList");
+
         setCount(0);
 
-        // Optionally, show a success notification
         notification.success({
           message: "Messages Marked as Read",
           description: "You have viewed all your messages.",
         });
-
-        // Log before navigate to check if it's reached
-        console.log("Navigating to /staffList");
-        navigate("/staffList");
       })
       .catch((error) => {
         console.error(
@@ -203,10 +211,7 @@ const HomePage = () => {
                       </Link>
                     </li>
                     <li style={{ marginLeft: "15px " }}>
-                      <NotificationBell
-                        count={count}
-                        onClick={handleBellClick}
-                      />
+                      <NotificationBell count={count} onClick={handleBellClick} />
                     </li>
                     <li>
                       <Link>{RenderContent()}</Link>

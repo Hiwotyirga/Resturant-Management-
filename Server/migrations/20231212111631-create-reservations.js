@@ -33,12 +33,10 @@ module.exports = {
         allowNull: false,
         defaultValue: "New",
       },
-      // Stuation: {
-      //   type: Sequelize.STRING,
-      //   allowNull: false,
-      //   enum: ["open", "close"],
-      //   defaultValue: "open",
-      // },
+      FeeStatus: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       ActualArrivalTime: {
         type: Sequelize.STRING,
         allowNull: true,

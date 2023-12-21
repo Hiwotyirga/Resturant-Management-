@@ -18,7 +18,7 @@ function Login() {
       .post("http://localhost:9000/users/login", data)
       .then((res) => {
         if (res.data.error) {
-          alert(res.data.errror);
+          alert(res.data.error);
         } else {
           sessionStorage.setItem("accessToken", res.data);
           hist("/homepage");

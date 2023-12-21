@@ -13,13 +13,11 @@ router.get("/confirm-count", async (req, res) => {
       Status: "confirm",
     },
   });
- 
+
   res.json(confirmcount);
 });
 //count start
 router.get("/start-count", async (req, res) => {
-  
- 
   const startedcount = await Reservation.count({
     where: {
       Status: "started",
@@ -28,23 +26,23 @@ router.get("/start-count", async (req, res) => {
   res.json(startedcount);
 });
 // count cancel
-router.get("/cancel-count",async(req,res)=>{
+router.get("/cancel-count", async (req, res) => {
   const canceledcount = await Reservation.count({
     where: {
       Status: "canceled",
     },
   });
- 
+
   res.json(canceledcount);
 });
 //count validate reservation
-router.get("/userValidate-count",async(req,res)=>{
+router.get("/userValidate-count", async (req, res) => {
   const canceledcount = await Reservation.count({
     where: {
-      Status: { [Op.not]: "canceled" } ,
+      Status: { [Op.not]: "canceled" },
     },
   });
- 
+
   res.json(canceledcount);
 });
 //user reservation list with validateToken
@@ -52,8 +50,9 @@ router.get("/user", validateToken, async (req, res) => {
   try {
     const userId = req.user.id;
     const reservations = await Reservation.findAll({
-      where: { 
-         Status: { [Op.not]: "canceled" } },
+      where: {
+        Status: { [Op.not]: "canceled" },
+      },
       include: {
         model: Users,
         attributes: ["name"],
@@ -66,24 +65,23 @@ router.get("/user", validateToken, async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-router.put('/mark-reservations-as-read', async (req, res) => {
-  
-    const userId = req.user.id;
+router.put("/mark-reservations-as-read", async (req, res) => {
+  const userId = req.user.id;
 
-    // Mark reservations as read in the database based on userId
-    await Reservation.update(
-      { isRead: true },
-      {
-        where: {
-          userId,
-          Status: { [Op.not]: "canceled" },
-          isRead: false,
-        },
-      }
-    );
+ 
+  await Reservation.update(
+    { isRead: true },
+    {
+      where: {
+        userId,
+        Status: { [Op.not]: "canceled" },
+        isRead: false,
+      },
+    }
+  );
 
-    res.json({ success: true });
-})
+  res.json({ success: true });
+});
 
 //  from admin page to get all confirm reservarion
 router.get("/confirm", async (req, res) => {
@@ -270,6 +268,39 @@ router.put("/cancel/:id", async (req, res) => {
 
   res.json("Success");
 });
+router.put("/feestatus/:id", async (req, res) => {
+  const { FeeStatus } = req.body; 
+  const id = req.params.id;
+
+ 
+    const reservation = await Reservation.findByPk(id);
+
+    if (reservation) {
+      reservation.FeeStatus = FeeStatus;
+      await reservation.save();
+      res.json({ FeeStatus });
+    } else {
+      res.status(404).json({ error: "Reservation not found" });
+    }
+  
+});
+router.put("/actualtime/:id", async (req, res) => {
+  const { ActualArrivalTime } = req.body; 
+  const id = req.params.id;
+
+ 
+    const reservation = await Reservation.findByPk(id);
+
+    if (reservation) {
+      reservation.ActualArrivalTime = ActualArrivalTime;
+      await reservation.save();
+      res.json({ ActualArrivalTime });
+    } else {
+      res.status(404).json({ error: "Reservation not found" });
+    }
+  
+});
+
 
 //admin to start
 router.put("/start/:id", async (req, res) => {

@@ -138,12 +138,17 @@ const StaffList = () => {
 
   const cancelReservation = (reservationId) => {
     axios
-      .put(`http://localhost:9000/reservation/cancel/${reservationId}`, {
-        headers: {
-          Authorization: "Bearer " + sessionStorage.getItem("accessToken"),
-        },
-      })
+      .put(
+        `http://localhost:9000/reservation/cancel/${reservationId}`,
+        {},
+        {
+          headers: {
+            Authorization: "Bearer " + sessionStorage.getItem("accessToken"),
+          },
+        }
+      )
       .then(() => {
+        // Update the reservations locally
         setReservations((prevReservations) => {
           return prevReservations.map((reservation) => {
             if (reservation.id === reservationId) {
@@ -152,13 +157,29 @@ const StaffList = () => {
             return reservation;
           });
         });
-        Swal.fire("Canceled", "Reservation canceled successfully!");
+  
+       
+        axios
+          .get(`http://localhost:9000/reservation/user`, {
+            headers: {
+              Authorization: "Bearer " + sessionStorage.getItem("accessToken"),
+            },
+          })
+          .then((response) => {
+            
+            setReservations(response.data);
+  
+            Swal.fire("Canceled", "Reservation canceled successfully!");
+          })
+          .catch((error) => {
+            console.error("Error fetching updated reservations:", error);
+          });
       })
       .catch((error) => {
-        console.error("Confirmation error:", error);
+        console.error("Cancellation error:", error);
       });
   };
-
+  
   return (
     <div >
       <h1>Your Reservations</h1>
