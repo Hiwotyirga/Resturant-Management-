@@ -1,23 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Table, Space, Tag, Modal, Input } from "antd";
-import { useParams } from "react-router-dom";
+import { Table, Space, Button, Popover, DatePicker } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import Swal from "sweetalert2";
 
 const Staff = () => {
   const [reservations, setReservations] = useState([]);
   const [reservarionStatus, setReservationStatus] = useState("");
-  const [IsModalVisible, setIsModalVisible] = useState(false);
-  const [Status, setStatus] = useState([]);
-  const [value, setValue] = useState({
-    TableNumber: "",
-  });
   const [loading, setLoading] = useState(false);
-  // const { Id } = useParams();
-
-  const ShowModal = () => {
-    setIsModalVisible(true);
-  };
 
   useEffect(() => {
     axios
@@ -29,18 +19,37 @@ const Staff = () => {
         console.error(error);
       });
   }, []);
-  const onChange = (e) => {
-    const { name, value } = e.target;
-    setValue((prevValue) => ({
-      ...prevValue,
-      [name]: value,
-    }));
-  };
 
+  const content = (
+    <div>
+      <DatePicker
+        onChange={(date) => {
+          closeDatePicker();
+          // Process the selected date
+        }}
+      />
+      <Button onClick={closeDatePicker}>Cancel</Button>
+      <button onClick={saveTimepicker}>OK</button>
+    </div>
+  );
+
+  const promptForDate = () => {
+    // Use setPopoverVisible to control the visibility
+    setPopoverVisible(true);
+
+    const closeDatePicker = () => {
+      setPopoverVisible(false);
+    };
+
+    const saveTimepicker = () => {
+      setPopoverVisible(false);
+      // Add logic to save the selected date
+    };}
   const confirmReservation = (reservationId) => {
     axios
       .put(`http://localhost:9000/reservation/comfirm/${reservationId}`)
-      .then(() => {
+      .then((res) => {
+        console.log(res.data);
         setReservations((prevReservations) => {
           return prevReservations.map((reservation) => {
             if (reservation.id === reservationId) {
@@ -49,7 +58,7 @@ const Staff = () => {
             return reservation;
           });
         });
-        alert("Reservation confirmed successfully!");
+        Swal.fire("Confirmed", "Reservation confirmed successfully!");
       })
       .catch((error) => {
         console.error("Confirmation error:", error);
@@ -58,10 +67,9 @@ const Staff = () => {
 
   const edittable = (reservationId) => {
     const newTable = prompt("Enter new table number");
-    if (!newTable) {
+    if (newTable !== null && newTable.trim() !== "") {
       return;
     }
-
     axios
       .put(`http://localhost:9000/reservation/table/${reservationId}`, {
         TableNumber: newTable,
@@ -77,15 +85,26 @@ const Staff = () => {
             return reservation;
           });
         });
+        Swal.fire("Table Number", "Success full");
       })
       .catch((error) => {
         console.error("Table update error:", error);
       });
+    handleFeeStatusUpdate();
   };
+
+  const handleFeeStatusUpdate = () => {
+    const newFewStatus = prompt(
+      `is the user fee paid? (Type "fee" or "paid")`
+    );
+    
+  };
+
   const startReservation = (reservationId) => {
     axios
       .put(`http://localhost:9000/reservation/start/${reservationId}`)
-      .then(() => {
+      .then((res) => {
+        console.log(res.data);
         setReservations((prevReservations) => {
           return prevReservations.map((reservation) => {
             if (reservation.id === reservationId) {
@@ -94,7 +113,7 @@ const Staff = () => {
             return reservation;
           });
         });
-        alert("Reservation Started successfully!");
+        Swal.fire("Started", "Reservation Started successfully!");
       })
       .catch((error) => {
         console.error("start error:", error);
@@ -104,7 +123,7 @@ const Staff = () => {
   const handleStatusChange = (newStatus) => {
     axios
       .post("http://localhost:9000/reservation/update-status", {
-        Stuation: newStatus, // Make sure the field name matches what the server expects
+        Stuation: newStatus,
       })
       .then((response) => {
         setReservationStatus(newStatus);
@@ -114,6 +133,7 @@ const Staff = () => {
         console.error(error);
       });
   };
+  
   const columns = [
     {
       title: "Name",
@@ -147,6 +167,11 @@ const Staff = () => {
       key: "Selection",
     },
     {
+      title: "TableNumber",
+      dataIndex: "TableNumber",
+      key: "TableNumber",
+    },
+    {
       title: "Action",
       key: "action",
       render: (_, data) => (
@@ -160,6 +185,17 @@ const Staff = () => {
           <a onClick={() => startReservation(data.id)}>
             <button>Start</button>
           </a>
+          <Popover
+            title="Select Reservation Date"
+            content={content}
+            trigger="click"
+            visible={popoverVisible}
+            onVisibleChange={(visible) => {
+              if (!visible) closeDatePicker();
+            }}
+          >
+            <Button>Arrival Time</Button>
+          </Popover>
         </Space>
       ),
     },
@@ -168,7 +204,7 @@ const Staff = () => {
   return (
     <div>
       <div style={{ margin: "20px 10px 10px 750px", justifyContent: "end" }}>
-      <p>{reservarionStatus}</p>
+        <p>{reservarionStatus}</p>
         <button
           onClick={() => handleStatusChange("open")}
           disabled={loading || reservarionStatus === "open"}
@@ -177,7 +213,6 @@ const Staff = () => {
         >
           Open Reservation
         </button>
-       
         <button
           onClick={() => {
             handleStatusChange("closed");
@@ -189,7 +224,7 @@ const Staff = () => {
           Close Reservation
         </button>
       </div>
-      <h1> New Reservation List</h1>
+      <h1>New Reservation List</h1>
       <Table columns={columns} dataSource={reservations} />
     </div>
   );

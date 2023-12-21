@@ -8,7 +8,7 @@ import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 const Cancled = () => {
   const [reservation, setReservations] = useState([]);
   useEffect(() => {
-    axios.get("http://localhost:9000/reservation/cancle").then((res) => {
+    axios.get("http://localhost:9000/reservation/cancel").then((res) => {
       setReservations(res.data);
     });
   }, []);

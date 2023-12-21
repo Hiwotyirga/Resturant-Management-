@@ -5,6 +5,7 @@ import { Card, Space, TimePicker, DatePicker, Radio } from "antd";
 import moment from "moment";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const { Header, Sider, Content } = Layout;
 const { Search } = Input;
@@ -78,7 +79,7 @@ const TableManagementSystem = () => {
         if (response.data.error) {
           alert(response.data.error);
         } else {
-          console.log(response.data);
+          Swal.fire("Reservation","You did it")
           // console.log(response.reservationStatus)
           // alert("seccuss full");
         }
@@ -86,7 +87,7 @@ const TableManagementSystem = () => {
      
     }
    else{
-    alert("Reservation system is closed. Unable to make a reservation at this time.");
+    Swal.fire("Reservation system is closed", "Unable to make a reservation at this time");
     return;
   
    }

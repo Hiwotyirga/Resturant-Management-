@@ -15,6 +15,7 @@ import Status from "./component/Staff/status";
 import Confirm from "./component/Staff/Confirm";
 import Started from "./component/Staff/Started";
 import Cancled from "./component/Staff/Cancled";
+import NotificationBell from "./component/User/NotificationBell";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
           <Route path="/confirm" element={<Confirm />} />
           <Route path="/started" element={<Started />} />
           <Route path="/cancle" element={<Cancled />} />
+          <Route path="notificationBell" element={<NotificationBell />} />
         </Routes>
       </BrowserRouter>
     </div>

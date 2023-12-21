@@ -16,12 +16,17 @@ import axios from "axios";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { useParams } from "react-router-dom";
 import moment from "moment";
+import Swal from "sweetalert2";
 
 const StaffList = () => {
   const [reservations, setReservations] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [open, setOpen] = useState(false);
   const [postAll, setPostAll] = useState([]);
+  // const [reservations, setReservations] = useState([]);
+  const [reservarionStatus, setReservationStatus] = useState("");
+  // const [IsModalVisible, setIsModalVisible] = useState(false);
+  const [Status, setStatus] = useState([]);
   const [reservation, setReservation] = useState([]);
   const [values, setValues] = useState({
     PhoneNumber: "",
@@ -133,35 +138,31 @@ const StaffList = () => {
 
   const cancelReservation = (reservationId) => {
     axios
-      .post(
-        "http://localhost:9000/reservation/cancel",
-        { reservationId },
-        {
-          headers: {
-            Authorization: "Bearer " + sessionStorage.getItem("accessToken"),
-          },
-        }
-      )
+      .put(`http://localhost:9000/reservation/cancel/${reservationId}`, {
+        headers: {
+          Authorization: "Bearer " + sessionStorage.getItem("accessToken"),
+        },
+      })
       .then(() => {
-        setReservation((prevReservations) => {
+        setReservations((prevReservations) => {
           return prevReservations.map((reservation) => {
             if (reservation.id === reservationId) {
-              return { ...reservation, Status: "cancel" };
+              return { ...reservation, Status: "canceled" };
             }
             return reservation;
           });
         });
-        alert("Reservation cancel successfully!");
+        Swal.fire("Canceled", "Reservation canceled successfully!");
       })
       .catch((error) => {
-        console.error("start error:", error);
+        console.error("Confirmation error:", error);
       });
   };
 
   return (
-    <div>
+    <div >
       <h1>Your Reservations</h1>
-      <Row gutter={[16, 16]}>
+      <Row gutter={[16, 16]} style={{ display: "flex", flexDirection: "column" }}>
         {reservations.map((reservation) => (
           <Col key={reservation.id} span={8}>
             <Card
