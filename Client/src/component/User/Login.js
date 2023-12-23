@@ -68,10 +68,10 @@ function Login() {
         />
       
         <br />
-        <button type="submit" className="button">
+        <button type="submit" className="button bg-pink">
           Login
         </button>
-        <p className="input">OR</p>
+        <p className="input ">OR</p>
 
 <Link to="/register" className="">
   Register

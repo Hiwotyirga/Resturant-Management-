@@ -19,7 +19,6 @@ const Staff = () => {
   const [time, setTime] = useState({
     ActualArrivalTime: null,
   });
- 
 
   useEffect(() => {
     axios
@@ -42,18 +41,19 @@ const Staff = () => {
 
   const saveTimepicker = () => {
     setPopoverVisible(false);
-   if(selectedTime){
-    axios
-    .put(`http://localhost:9000/reservation/actualtime/${reservationId}`, { ActualArrivalTime: selectedTime.format("HH:mm:ss"),})
-    .then((res) => {
-      console.log(res.data);
-    })
-    .catch((error) => {
-      console.error("Error updating actual arrival time:", error);
-    });
-   }
-    else{
-      console.log("error")
+    if (selectedTime) {
+      axios
+        .put(`http://localhost:9000/reservation/actualtime/${reservationId}`, {
+          ActualArrivalTime: selectedTime.format("HH:mm:ss"),
+        })
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((error) => {
+          console.error("Error updating actual arrival time:", error);
+        });
+    } else {
+      console.log("error");
     }
   };
   dayjs.extend(customParseFormat);
@@ -84,13 +84,10 @@ const Staff = () => {
             return reservation;
           });
         });
-        axios
-        .get("http://localhost:9000/reservation/list")
-        .then((response) => {
+        axios.get("http://localhost:9000/reservation/list").then((response) => {
           setReservations(response.data);
           Swal.fire("Confirmed", "Reservation confirmed successfully!");
-        })
-      
+        });
       })
       .catch((error) => {
         console.error("Confirmation error:", error);
@@ -164,32 +161,29 @@ const Staff = () => {
             return reservation;
           });
         });
-        axios
-        .get("http://localhost:9000/reservation/list")
-        .then((response) => {
+        axios.get("http://localhost:9000/reservation/list").then((response) => {
           setReservations(response.data);
           Swal.fire("Started", "Reservation Started successfully!");
-        })
-       
+        });
       })
       .catch((error) => {
         console.error("start error:", error);
       });
   };
 
-  // const handleStatusChange = (newStatus) => {
-  //   axios
-  //     .post("http://localhost:9000/reservation/update-status", {
-  //       Stuation: newStatus,
-  //     })
-  //     .then((response) => {
-  //       setReservationStatus(newStatus);
-  //       console.log("Reservation status updated to:", newStatus);
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // };
+  const handleStatusChange = (newStatus) => {
+    axios
+      .post("http://localhost:9000/reservation/update-status", {
+        Stuation: newStatus,
+      })
+      .then((response) => {
+        setReservationStatus(newStatus);
+        console.log("Reservation status updated to:", newStatus);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   const columns = [
     {

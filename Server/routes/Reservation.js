@@ -3,7 +3,7 @@ const router = express.Router();
 const { validateToken } = require("../middlewares/Authmiddleware");
 const { Op, where } = require("sequelize");
 const { Users, Reservation } = require("../models");
-const ReservationController = require("../controllers/ReservationController");
+const ReservationMaxDuration = require("../controllers/ReservationController");
 // const ReservationStatus = require("../models/reservationStatus");
 const { reservationStatus } = require("../models");
 //for confirm count
@@ -68,7 +68,6 @@ router.get("/user", validateToken, async (req, res) => {
 router.put("/mark-reservations-as-read", async (req, res) => {
   const userId = req.user.id;
 
- 
   await Reservation.update(
     { isRead: true },
     {
@@ -184,22 +183,38 @@ router.get("/status", checkReservationStatus, (req, res) => {
   res.json({ status: ReservationStatus });
 });
 
-router.post("/", validateToken, checkReservationStatus, async (req, res) => {
-  const { name, id } = req.user;
-  const { PhoneNumber, Date, Time, NumberOfGuest, Selection } = req.body;
-  const newReservation = {
-    PhoneNumber,
-    Date,
-    Time,
-    NumberOfGuest,
-    Selection,
-    userId: id,
-  };
-
-  await Reservation.create(newReservation);
-
-  res.json(newReservation);
-});
+router.post(
+  "/",
+  validateToken,
+  checkReservationStatus,
+  ReservationMaxDuration,
+  async (req, res) => {
+    const { name, id } = req.user;
+    const { PhoneNumber, Date, Time, NumberOfGuest, Selection } = req.body;
+    try {
+      const newReservation = {
+        PhoneNumber,
+        Date,
+        Time,
+        NumberOfGuest,
+        Selection,
+        userId: id,
+      };
+  
+      await Reservation.create(newReservation);
+      if (req.reservationExpired) {
+        return res.status(400).json({ error: "Reservation has expired" });
+      }
+  
+      res.json(newReservation);
+      
+    } catch (error) {
+      res.json({error:"error"})
+      
+    }
+    
+  }
+);
 
 //to update reservation
 router.put("/userdata", validateToken, async (req, res) => {
@@ -269,38 +284,33 @@ router.put("/cancel/:id", async (req, res) => {
   res.json("Success");
 });
 router.put("/feestatus/:id", async (req, res) => {
-  const { FeeStatus } = req.body; 
+  const { FeeStatus } = req.body;
   const id = req.params.id;
 
- 
-    const reservation = await Reservation.findByPk(id);
+  const reservation = await Reservation.findByPk(id);
 
-    if (reservation) {
-      reservation.FeeStatus = FeeStatus;
-      await reservation.save();
-      res.json({ FeeStatus });
-    } else {
-      res.status(404).json({ error: "Reservation not found" });
-    }
-  
+  if (reservation) {
+    reservation.FeeStatus = FeeStatus;
+    await reservation.save();
+    res.json({ FeeStatus });
+  } else {
+    res.status(404).json({ error: "Reservation not found" });
+  }
 });
 router.put("/actualtime/:id", async (req, res) => {
-  const { ActualArrivalTime } = req.body; 
+  const { ActualArrivalTime } = req.body;
   const id = req.params.id;
 
- 
-    const reservation = await Reservation.findByPk(id);
+  const reservation = await Reservation.findByPk(id);
 
-    if (reservation) {
-      reservation.ActualArrivalTime = ActualArrivalTime;
-      await reservation.save();
-      res.json({ ActualArrivalTime });
-    } else {
-      res.status(404).json({ error: "Reservation not found" });
-    }
-  
+  if (reservation) {
+    reservation.ActualArrivalTime = ActualArrivalTime;
+    await reservation.save();
+    res.json({ ActualArrivalTime });
+  } else {
+    res.status(404).json({ error: "Reservation not found" });
+  }
 });
-
 
 //admin to start
 router.put("/start/:id", async (req, res) => {

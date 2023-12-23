@@ -20,20 +20,20 @@ router.post("/login", async (req, res) => {
   const user = await Users.findOne({
     where: { name: name },
   });
-  if (user){
-    if(password === user.password & email === user.email){
-      const accessToken = sign({ name: user.name, id: user.id }, "importantsecret");
-  res.json(accessToken);
+  if (user) {
+    if ((password === user.password) & (email === user.email)) {
+      const accessToken = sign(
+        { name: user.name, id: user.id },
+        "importantsecret"
+      );
+      res.json(accessToken);
+    } else {
+      res.json({ error: "wrong password or email " });
+    }
+  } else {
+    res.json({ error: "This name is doesn't exist" }); 
+  }
 
-    }
-    else{
-      res.json({error:"wrong password or email "})
-    }
-  }
-  else{
-    res.json({ error: "This name is doesn't exist" });
-  }
-  
   //  res.json("secuss")
 });
 

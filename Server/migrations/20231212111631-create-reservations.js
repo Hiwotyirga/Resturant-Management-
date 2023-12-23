@@ -4,9 +4,10 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable("Reservations", {
       id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
-        autoIncrement: true,
+        // autoIncrement: true,
       },
       PhoneNumber: {
         type: Sequelize.STRING,
@@ -41,22 +42,27 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
       },
-      Reservation: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
+      // Reservation: {
+      //   type: Sequelize.STRING,
+      //   allowNull: true,
+      // },
       TableNumber: {
         type: Sequelize.STRING,
         allowNull: true,
       },
-      Start: {
-        type: Sequelize.STRING,
-        allowNull: true,
+      startTime: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
+      // Start: {
+      //   type: Sequelize.STRING,
+      //   allowNull: true,
+      // },
       userId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID, 
         references: {
-          model: "Users", // Assuming your Users table is named Users
+          model: "Users",
           key: "id",
         },
         onUpdate: "CASCADE",

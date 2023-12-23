@@ -1,41 +1,36 @@
 const { Reservation } = require("../models");
+// exports.closeReservation = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const reservation = await Reservation.findByPk(id);
 
-exports.openReservation = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const reservation = await Reservation.findByPk(id);
+//     if (!reservation) {
+//       return res
+//         .status(404)
+//         .json({ success: false, error: "Reservation not found" });
+//     }
 
-    if (!reservation) {
-      return res
-        .status(404)
-        .json({ success: false, error: "Reservation not found" });
-    }
+//     await reservation.update({ Stuation: "close" });
 
-    await reservation.update({ Stuation: "open" });
+//     res.status(200).json({ success: true, reservation });
+//   } catch (error) {
+//     console.error("Error closing reservation:", error);
+//     res.status(500).json({ success: false, error: "Internal Server Error" });
+//   }
+// };
 
-    res.status(200).json({ success: true, reservation });
-  } catch (error) {
-    console.error("Error opening reservation:", error);
-    res.status(500).json({ success: false, error: "Internal Server Error" });
+const ReservationMaxDuration = async (req, res, next) => {
+  const { PhoneNumber, Date: ReservationDate, Time, NumberOfGuest, Selection } = req.body;
+  const reservationMaxDuration = 60 * 60 * 1000; 
+
+  const reservationEndTime =
+    new Date(`${Date}T${Time}:00Z`).getTime() + reservationMaxDuration;
+
+  if (Date.now() > reservationEndTime) {
+    return res.json({ error: "Reservation has expired" });
   }
+
+  next();
 };
 
-exports.closeReservation = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const reservation = await Reservation.findByPk(id);
-
-    if (!reservation) {
-      return res
-        .status(404)
-        .json({ success: false, error: "Reservation not found" });
-    }
-
-    await reservation.update({ Stuation: "close" });
-
-    res.status(200).json({ success: true, reservation });
-  } catch (error) {
-    console.error("Error closing reservation:", error);
-    res.status(500).json({ success: false, error: "Internal Server Error" });
-  }
-};
+module.exports = ReservationMaxDuration;

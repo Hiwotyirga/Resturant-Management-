@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { Layout, Modal, Button, Input, InputNumber, Form } from "antd";
 import { Card, Space, TimePicker, DatePicker, Radio } from "antd";
@@ -15,7 +15,7 @@ const TableManagementSystem = () => {
   const [open, setOpen] = useState(false);
   const [count, setCount] = useState(0);
   const [postAll, setPostAll] = useState([]);
-  const [reservationStatus, setReservationStatus] = useState("open"); 
+  const [reservationStatus, setReservationStatus] = useState("open");
   const [values, setValues] = useState({
     PhoneNumber: "",
     Date: "",
@@ -57,11 +57,13 @@ const TableManagementSystem = () => {
   useEffect(() => {
     const fetchReservationStatus = async () => {
       try {
-        const response = await axios.get('http://localhost:9000/reservation/status');
+        const response = await axios.get(
+          "http://localhost:9000/reservation/status"
+        );
         const status = response.data.status;
         setReservationStatus(status);
       } catch (error) {
-        console.error('Error fetching reservation status: ', error);
+        console.error("Error fetching reservation status: ", error);
       }
     };
     fetchReservationStatus();
@@ -70,36 +72,32 @@ const TableManagementSystem = () => {
     setIsModalVisible(false);
     if (reservationStatus === "open") {
       axios
-      .post( `http://localhost:9000/reservation?userId=${id}`, values, {
-        headers: {
-          Authorization: "Bearer " + sessionStorage.getItem("accessToken"),
-        },
-        
-      })
-      .then((response) => {
-        if (response.data.error) {
-          alert(response.data.error);
-        } else {
-          
+        .post(`http://localhost:9000/reservation?userId=${id}`, values, {
+          headers: {
+            Authorization: "Bearer " + sessionStorage.getItem("accessToken"),
+          },
+        })
+        .then((response) => {
+          if (response.data.error) {
+            alert(response.data.error);
+          } else if (response.data.reservationExpired) {
+            alert("Reservation has expired");
+          } else {
             axios
               .get("http://localhost:9000/reservation/userValidate-count")
               .then((res) => {
                 setCount(res.data);
-                Swal.fire("Reservation","You did it")
+                Swal.fire("Reservation", "You did it");
               });
-         
-         
-          // console.log(response.reservationStatus)
-          // alert("seccuss full");
-        }
-      });
-     
+          }
+        });
+    } else {
+      Swal.fire(
+        "Reservation system is closed",
+        "Unable to make a reservation at this time"
+      );
+      return;
     }
-   else{
-    Swal.fire("Reservation system is closed", "Unable to make a reservation at this time");
-    return;
-  
-   }
   };
 
   return (
@@ -121,7 +119,6 @@ const TableManagementSystem = () => {
                 New Reservation
               </div>
             </Button>
-            
           </div>
           <div>
             <Form initialValues={values}>

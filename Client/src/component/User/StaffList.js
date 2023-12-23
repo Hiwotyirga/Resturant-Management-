@@ -122,7 +122,7 @@ const StaffList = () => {
           alert(response.data.error);
         } else {
           // console.log(response.data);
-          alert("success");
+          Swal.fire("Update Reservation", "Success");
         }
         axios
           .get(`http://localhost:9000/reservation/user`, {
@@ -157,8 +157,7 @@ const StaffList = () => {
             return reservation;
           });
         });
-  
-       
+
         axios
           .get(`http://localhost:9000/reservation/user`, {
             headers: {
@@ -166,9 +165,8 @@ const StaffList = () => {
             },
           })
           .then((response) => {
-            
             setReservations(response.data);
-  
+
             Swal.fire("Canceled", "Reservation canceled successfully!");
           })
           .catch((error) => {
@@ -179,19 +177,29 @@ const StaffList = () => {
         console.error("Cancellation error:", error);
       });
   };
-  
+
   return (
-    <div >
+    <div>
       <h1>Your Reservations</h1>
-      <Row gutter={[16, 16]} style={{ display: "flex", flexDirection: "column" }}>
+      <Row
+        gutter={[16, 16]}
+        style={{ display: "flex", flexDirection: "column" }}
+      >
         {reservations.map((reservation) => (
           <Col key={reservation.id} span={8}>
             <Card
-              style={{ backgroundColor: "grey", color: "white" }}
+              style={{
+                backgroundColor: "grey",
+                color: "white",
+                width: "500px",
+              }}
               title={`Reservation on ${reservation.Date} at ${reservation.Time}`}
             >
               <Space direction="vertical">
-                <p>Name:{reservation.User.name}</p>
+                <p style={{ justifyContent: "space-between" }}>
+                  ReservationId:{reservation.id}
+                </p>
+                <p style={{ justifyContent: "space-evenly" }}>Name:{reservation.User.name}</p>
                 <p>phone Number: {reservation.PhoneNumber}</p>
                 <p>Number of Guests: {reservation.NumberOfGuest}</p>
                 <p>Selection: {reservation.Selection}</p>

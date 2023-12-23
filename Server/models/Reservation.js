@@ -1,6 +1,11 @@
 module.exports = (Sequelize, DataTypes, Op, Model) => {
   // const Users = require("./Users");
   const Reservation = Sequelize.define("Reservation", {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
+    },
     PhoneNumber: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -26,29 +31,32 @@ module.exports = (Sequelize, DataTypes, Op, Model) => {
       allowNull: false,
       defaultValue: "New",
     },
-   FeeStatus:{
-    type: DataTypes.STRING,
-    allowNull: true,  
-
-   },
-  
-
-    ActualArrivalTime: {
-      type: DataTypes.STRING,
-      allowNull: true,  
-    },
-    Reservation: {
+    FeeStatus: {
       type: DataTypes.STRING,
       allowNull: true,
     },
+
+    ActualArrivalTime: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    startTime: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+    },
+    // Reservation: {
+    //   type: DataTypes.STRING,
+    //   allowNull: true,
+    // },
     TableNumber: {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    Start: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
+    // Start: {
+    //   type: DataTypes.STRING,
+    //   allowNull: true,
+    // },
   });
 
   Reservation.associate = (models) => {
