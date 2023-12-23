@@ -3,22 +3,32 @@ import axios from "axios";
 import { Table, Space, Button, Popover } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import Swal from "sweetalert2";
+// import { useParams } from "react-router-dom";
 import { useParams } from "react-router-dom";
-// import React from 'react';
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { TimePicker } from "antd";
+import moment from "moment";
 
 const Staff = () => {
   const [reservations, setReservations] = useState([]);
+  const [reservation, setReservation] = useState([]);
+  const [reservationid, setReservationId] = useState(null);
   const [reservarionStatus, setReservationStatus] = useState("");
   const [loading, setLoading] = useState(false);
   const [selectedTime, setSelectedTime] = useState(null);
   const [popoverVisible, setPopoverVisible] = useState(false);
-  // const [selectedTime, setSelectedTime] = useState(null);
   const [time, setTime] = useState({
     ActualArrivalTime: null,
   });
+
+  const { id } = useParams();
+  dayjs.extend(customParseFormat);
+
+  const onChanges = (value, valueString) => {
+    console.log(value, valueString);
+    setTime({ ActualArrivalTime: value });
+  };
 
   useEffect(() => {
     axios
@@ -30,7 +40,7 @@ const Staff = () => {
         console.error(error);
       });
   }, []);
-  const { reservationId } = useParams;
+
   const ShowPopover = () => {
     setPopoverVisible(true);
   };
@@ -38,36 +48,50 @@ const Staff = () => {
   const closeTimePicker = () => {
     setPopoverVisible(false);
   };
-
-  const saveTimepicker = () => {
-    setPopoverVisible(false);
-    if (selectedTime) {
+  const saveTimepicker = (reservationId) => {
+    try {
       axios
         .put(`http://localhost:9000/reservation/actualtime/${reservationId}`, {
-          ActualArrivalTime: selectedTime.format("HH:mm:ss"),
+          ActualArrivalTime: time.ActualArrivalTime.format("HH:mm:ss"),
         })
         .then((res) => {
           console.log(res.data);
-        })
-        .catch((error) => {
-          console.error("Error updating actual arrival time:", error);
+          setReservations((prevReservations) => {
+            return prevReservations.map((reservation) => {
+              if (reservation.id === reservationId) {
+                return {
+                  ...reservation,
+                  ActualArrivalTime: time.ActualArrivalTime.format("HH:mm:ss"),
+                };
+              }
+              return reservation;
+            });
+          });
         });
-    } else {
-      console.log("error");
+    } catch (error) {
+      console.log({ error: "error" });
     }
   };
-  dayjs.extend(customParseFormat);
+
   const onChange = (time, timeString) => {
     console.log(time, timeString);
   };
   const content = (
     <div>
       <TimePicker
-        onChange={onChange}
+        onChange={onChanges}
         defaultOpenValue={dayjs("00:00:00", "HH:mm:ss")}
+        value={time.ActualArrivalTime ? dayjs(time.ActualArrivalTime) : null}
       />
       <Button onClick={closeTimePicker}>Cancel</Button>
-      <button onClick={saveTimepicker}>OK</button>
+      <Button
+        type="primary"
+        onClick={() => {
+          saveTimepicker(reservation.id);
+        }}
+      >
+        OK
+      </Button>
     </div>
   );
 
@@ -94,59 +118,59 @@ const Staff = () => {
       });
   };
 
-  const edittable = (reservationId) => {
+  const edittable = async (reservationId) => {
     const newTable = prompt("Enter new table number");
     if (!newTable) {
       return;
     }
-    axios
-      .put(`http://localhost:9000/reservation/table/${reservationId}`, {
-        TableNumber: newTable,
-      })
-      .then((response) => {
-        console.log("Table update response:", response.data);
 
-        setReservations((prevReservations) => {
-          return prevReservations.map((reservation) => {
-            if (reservation.id === reservationId) {
-              return { ...reservation, TableNumber: newTable };
-            }
-            return reservation;
-          });
+    try {
+      const response = await axios.put(
+        `http://localhost:9000/reservation/table/${reservationId}`,
+        {
+          TableNumber: newTable,
+        }
+      );
+
+      console.log("Table update response:", response.data);
+
+      setReservations((prevReservations) => {
+        return prevReservations.map((reservation) => {
+          if (reservation.id === reservationId) {
+            return { ...reservation, TableNumber: newTable };
+          }
+          return reservation;
         });
-        Swal.fire("Table Number", "Success full");
-      })
-      .catch((error) => {
-        console.error("Table update error:", error);
       });
-    handleFeeStatusUpdate();
-  };
 
-  const handleFeeStatusUpdate = (reservationId) => {
-    const newFewStatus = prompt(`is the user fee paid? (Type "fee" or "paid")`);
-    if (!newFewStatus) {
-      axios
-        .put(`http://localhost:9000/reservation/feestatus/${reservationId}`, {
-          FeeStatus: newFewStatus,
-        })
-        .then((response) => {
-          console.log("feestatus update response:", response.data);
+      // await handleFeeStatusUpdate(reservationId); // Wait for fee update before proceeding
 
-          setReservations((prevReservations) => {
-            return prevReservations.map((reservation) => {
-              if (reservation.id === reservationId) {
-                return { ...reservation, FeeStatus: newFewStatus };
-              }
-              return reservation;
-            });
-          });
-          Swal.fire("Actual Arival Time", "Success full");
-        })
-        .catch((error) => {
-          console.error("Table update error:", error);
-        });
+      Swal.fire("Table Number", "Success full");
+    } catch (error) {
+      console.error("Table update error:", error);
     }
   };
+  // const handleFeeStatusUpdate = async(reservationId) => {
+  //   const newFeeStatus = prompt(`Is the user fee paid? (Type "fee" or "paid")`);
+  //   if (!newFeeStatus) {const response = await axios.put(`http://localhost:9000/reservation/feestatus/${reservationId}`, {
+  //     FeeStatus: newFeeStatus,
+  //   });
+
+  // setReservations((prevReservations) => {
+  //   return prevReservations.map((reservation) => {
+  //     if (reservation.id === reservationId) {
+  //       return { ...reservation, FeeStatus: newFewStatus };
+  //     }
+  //     return reservation;
+  //   });
+  // });
+  // Swal.fire("Actual Arival Time", "Success full");
+  //     })
+  //     .catch((error) => {
+  //       console.error("fee update error:", error);
+  //     });
+  //   }
+  // };
 
   const startReservation = (reservationId) => {
     axios
@@ -222,11 +246,11 @@ const Staff = () => {
       dataIndex: "TableNumber",
       key: "TableNumber",
     },
-    {
-      title: "FeeStatus",
-      dataIndex: "FeeStatus",
-      key: "FeeStatus",
-    },
+    // {
+    //   title: "FeeStatus",
+    //   dataIndex: "FeeStatus",
+    //   key: "FeeStatus",
+    // },
     {
       title: "ActualArrivalTime",
       dataIndex: "ActualArrivalTime",
@@ -248,7 +272,7 @@ const Staff = () => {
             <button>Start</button>
           </a>
           <a onClick={ShowPopover}>
-            <button>Arrival Time</button>
+            <button>Arrival Time </button>
           </a>
         </Space>
       ),

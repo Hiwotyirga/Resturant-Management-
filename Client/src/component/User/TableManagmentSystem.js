@@ -127,7 +127,7 @@ const TableManagementSystem = () => {
                 visible={isModalVisible}
                 onOk={() => onSubmit(values)}
                 onCancel={handleCancel}
-                width={850}
+                width={700}
               >
                 <div
                   style={{
@@ -142,7 +142,7 @@ const TableManagementSystem = () => {
                       width: "1000px",
                     }}
                   >
-                    <div style={{ marginLeft: "200px" }}>
+                    <div style={{ marginLeft: "150px" }}>
                       <div style={{ justifyContent: "center" }}>
                         <div style={{ margin: "23px" }}>
                           <label style={{ fontWeight: "bold" }}>

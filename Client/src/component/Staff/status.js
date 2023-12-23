@@ -40,10 +40,10 @@ const Status = () => {
   useEffect(() => {
    
     fetchReservationstart();
-    fetchReservationconfirm();
+    // fetchReservationconfirm();
 
     const intervalId = setInterval(
-      fetchReservationconfirm,
+      // fetchReservationconfirm,
       fetchReservationstart,
       10000
     );

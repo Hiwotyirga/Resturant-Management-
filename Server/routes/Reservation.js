@@ -299,7 +299,7 @@ router.put("/feestatus/:id", async (req, res) => {
 });
 router.put("/actualtime/:id", async (req, res) => {
   const { ActualArrivalTime } = req.body;
-  const id = req.params.id;
+  const {id} = req.params;
 
   const reservation = await Reservation.findByPk(id);
 

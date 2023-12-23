@@ -70,7 +70,9 @@ const ReservationStaff = () => {
       //  <Categoriess list={list} />;
       case "3":
         return <Status />;
-      case "4":
+        case "4":
+          return "";
+      case "5":
         // Render the content for "Order" item
         return <div>Order Content</div>;
       default:
@@ -86,7 +88,9 @@ const ReservationStaff = () => {
       //  <Categoriess list={list} />;
       case "3":
         return <Staff />;
-      case "4":
+        case "4":
+          return "";
+      case "5":
         return <div>Order Content</div>;
       default:
         return null;
@@ -127,10 +131,15 @@ const ReservationStaff = () => {
             {
               key: "3",
               icon: <VideoCameraOutlined />,
-              label: "Table Management",
+              label: "Reservation Management",
             },
             {
               key: "4",
+              icon: <VideoCameraOutlined />,
+              label: "Table Management",
+            },
+            {
+              key: "5",
               icon: <UploadOutlined />,
               label: "Order",
             },

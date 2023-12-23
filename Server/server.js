@@ -11,6 +11,8 @@ app.use("/users", usersRouter);
 
 const userRouter = require("./routes/Reservation");
 app.use("/reservation", userRouter);
+const tableManagmentRouter=require("./routes/TableManagementSystem");
+app.use("/tablemanage",tableManagmentRouter);
 
 const staffRouter = require("./routes/Staff");
 app.use("/staff", staffRouter);
