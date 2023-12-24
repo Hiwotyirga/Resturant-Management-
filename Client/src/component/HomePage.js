@@ -15,7 +15,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Login from "./User/Login";
 import Register from "./User/Register";
-import TableManagementSystem from "./User/TableManagmentSystem";
+import ReservationManagmentSystem from "./User/ReservationManagmentSystem";
 import Table from "./User/table";
 import NotificationBell from "./User/NotificationBell";
 import { Link } from "react-router-dom";
@@ -75,7 +75,7 @@ const HomePage = () => {
       case "2":
         return "";
       case "3":
-        return <TableManagementSystem />;
+        return <ReservationManagmentSystem />;
       default:
         return null;
     }
@@ -96,7 +96,9 @@ const HomePage = () => {
 
   const fetchReservationCount = async () => {
     try {
-      const response = await axios.get("http://localhost:9000/reservation/userValidate-count");
+      const response = await axios.get(
+        "http://localhost:9000/reservation/userValidate-count"
+      );
       setCount(response.data);
     } catch (error) {
       console.error("Error fetching reservation count:", error);
@@ -211,7 +213,10 @@ const HomePage = () => {
                       </Link>
                     </li>
                     <li style={{ marginLeft: "15px " }}>
-                      <NotificationBell count={count} onClick={handleBellClick} />
+                      <NotificationBell
+                        count={count}
+                        onClick={handleBellClick}
+                      />
                     </li>
                     <li>
                       <Link>{RenderContent()}</Link>

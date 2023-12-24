@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
 const { Header, Sider, Content } = Layout;
 const { Search } = Input;
 
-const TableManagementSystem = () => {
+const ReservationManagmentSystem = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [open, setOpen] = useState(false);
   const [count, setCount] = useState(0);
@@ -265,4 +265,4 @@ const TableManagementSystem = () => {
   );
 };
 
-export default TableManagementSystem;
+export default ReservationManagmentSystem;

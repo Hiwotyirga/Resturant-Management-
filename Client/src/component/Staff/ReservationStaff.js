@@ -13,6 +13,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Staff from "./Staff";
 import Status from "./status";
+import TableManagementSystem from "./TableManagementSystem";
+import AddTable from "./AddTable";
 
 const { Header, Sider, Content } = Layout;
 const { Search } = Input;
@@ -70,8 +72,8 @@ const ReservationStaff = () => {
       //  <Categoriess list={list} />;
       case "3":
         return <Status />;
-        case "4":
-          return "";
+      case "4":
+        return <AddTable />;
       case "5":
         // Render the content for "Order" item
         return <div>Order Content</div>;
@@ -88,8 +90,8 @@ const ReservationStaff = () => {
       //  <Categoriess list={list} />;
       case "3":
         return <Staff />;
-        case "4":
-          return "";
+      case "4":
+        return <TableManagementSystem />;
       case "5":
         return <div>Order Content</div>;
       default:
