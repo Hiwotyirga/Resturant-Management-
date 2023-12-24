@@ -19,6 +19,7 @@ import NotificationBell from "./component/User/NotificationBell";
 import TableManagementSystem from "./component/Staff/TableManagementSystem";
 import AddTable from "./component/Staff/AddTable";
 import AddTable2 from "./component/Staff/AddTable2";
+import EditTable from "./component/Staff/EditTable";
 
 function App() {
   return (
@@ -48,6 +49,7 @@ function App() {
           <Route path="/notificationBell" element={<NotificationBell />} />
           <Route path="/addtable" element={<AddTable />} />
           <Route path="/addtable2" element={<AddTable2 />} />
+          <Route path="/edittable/:id" element={<EditTable />} />
         </Routes>
       </BrowserRouter>
     </div>

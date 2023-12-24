@@ -3,9 +3,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Button } from "antd";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
-const AddTable2 = () => {
+const EditTable = () => {
   const [newTable, setNewTable] = useState({
     TableNumber: "",
     indoor: "indoor",
@@ -13,12 +13,23 @@ const AddTable2 = () => {
     VIP: "Regular",
     Note: "",
   });
-  const haddleSubmit = () => {
-    axios.post("http://localhost:9000/tablemanage", newTable).then((res) => {
-      setNewTable(res.data);
-      //   console.log(res.data);
-    });
-    Swal.fire("Add Table", "success");
+  const { id } = useParams();
+  const history = useNavigate();
+  const haddleSubmit = () => { 
+    axios
+      .put(`http://localhost:9000/tablemanage/update/${id}`, newTable)
+      .then((res) => {
+        // console.log(res.data);
+        setNewTable(res.data);
+
+        Swal.fire("Edit Table", "success", "success");
+        history("/staff");
+      })
+      .catch((error) => {
+        console.error("Error editing table:", error);
+
+        Swal.fire("Edit Table", "error", "error");
+      });
   };
 
   return (
@@ -95,18 +106,13 @@ const AddTable2 = () => {
             rows="3"
           ></textarea>
         </div>
-        <Link to="/staff">
-          <Button
-            type="button"
-            className="btn bg-primary"
-            onClick={haddleSubmit}
-          >
-            Add Table
-          </Button>
-        </Link>
+
+        <Button type="button" className="btn bg-primary" onClick={haddleSubmit}>
+          Edit Table
+        </Button>
       </form>
     </div>
   );
 };
 
-export default AddTable2;
+export default EditTable;

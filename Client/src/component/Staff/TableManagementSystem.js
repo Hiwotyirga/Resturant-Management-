@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, EditOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { Table, Space, Button, Popover } from "antd";
+import { Link } from "react-router-dom";
 
 const TableManagementSystem = () => {
   const [tables, setTables] = useState([]);
@@ -10,6 +11,7 @@ const TableManagementSystem = () => {
       setTables(res.data);
     });
   }, []);
+  const edittable = () => {};
   const columns = [
     {
       title: "Table Number",
@@ -52,31 +54,32 @@ const TableManagementSystem = () => {
     //   key: "ActualArrivalTime",
     // },
 
-    // {
-    //   title: "Action",
-    //   key: "action",
-    //   render: (_, data) => (
-    //     <Space size="middle">
-    //       <a onClick={() => edittable(data.id)}>
-    //         <EditOutlined />
-    //       </a>
-    //       <a onClick={() => confirmReservation(data.id)}>
-    //         <button>Comform</button>
-    //       </a>
-    //       <a onClick={() => startReservation(data.id)}>
-    //         <button>Start</button>
-    //       </a>
-    //       <a onClick={ShowPopover}>
-    //         <button>Arrival Time </button>
-    //       </a>
-    //     </Space>
-    //   ),
-    // },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, data) => (
+        <Space size="middle">
+          <a>
+            <Link to={`/edittable/${data.id}`}>
+              <EditOutlined />
+            </Link>
+          </a>
+          {/* <a onClick={() => confirmReservation(data.id)}>
+            <button>Comform</button>
+          </a> */}
+          {/* <a onClick={() => startReservation(data.id)}>
+            <button>Start</button>
+          </a> */}
+          {/* <a onClick={ShowPopover}>
+            <button>Arrival Time </button>
+          </a> */}
+        </Space>
+      ),
+    },
   ];
   return (
     <div>
       <Table columns={columns} dataSource={tables} />
-     
     </div>
   );
 };
