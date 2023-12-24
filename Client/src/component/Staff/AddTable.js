@@ -12,7 +12,7 @@ const AddTable = () => {
       //   //   flexDirection: "row",
       // }}
       >
-        <Link to="addtable2">
+        <Link to="/addtable2">
           <PlusOutlined
             style={{
               marginLeft: "5px",
