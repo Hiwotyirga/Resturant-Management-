@@ -7,14 +7,14 @@ import {
   VideoCameraOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu, Button, Input, theme, Card } from "antd";
-// import Categoriess from "./Category";
-// import CategoryDetail from "./CategoryDetail";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Staff from "./Staff";
 import Status from "./status";
 import TableManagementSystem from "./TableManagementSystem";
 import AddTable from "./AddTable";
+import MenuList from "./Menu/Menu";
+import Addmenu from "./Menu/Addmenu";
 
 const { Header, Sider, Content } = Layout;
 const { Search } = Input;
@@ -68,7 +68,7 @@ const ReservationStaff = () => {
       case "1":
         return <div>Hello from Content 1</div>;
       case "2":
-        return "";
+        return <Addmenu/>;
       //  <Categoriess list={list} />;
       case "3":
         return <Status />;
@@ -86,8 +86,8 @@ const ReservationStaff = () => {
       case "1":
         return <div>Hello from Content 1</div>;
       case "2":
-        return "";
-      //  <Categoriess list={list} />;
+        return <MenuList />;
+
       case "3":
         return <Staff />;
       case "4":

@@ -21,6 +21,9 @@ import AddTable from "./component/Staff/AddTable";
 import AddTable2 from "./component/Staff/AddTable2";
 import EditTable from "./component/Staff/EditTable";
 import Beaverage from "./component/User/Menu/Beaverage";
+import MenuList from "./component/Staff/Menu/Menu";
+import Addmenu from "./component/Staff/Menu/Addmenu";
+import Addmenu2 from "./component/Staff/Menu/Addmenu2";
 
 function App() {
   return (
@@ -52,6 +55,9 @@ function App() {
           <Route path="/addtable2" element={<AddTable2 />} />
           <Route path="/edittable/:id" element={<EditTable />} />
           <Route path="/beavarege" element={<Beaverage />} />
+          <Route path="/menu" element={<MenuList />} />
+          <Route path="/addmenu" element={<Addmenu />} />
+          <Route path="/addmenu2" element={<Addmenu2 />} />
         </Routes>
       </BrowserRouter>
     </div>

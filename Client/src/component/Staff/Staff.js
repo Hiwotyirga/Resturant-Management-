@@ -61,10 +61,6 @@ const Staff = () => {
       console.log({ error: "error" });
     }
   };
-
-  // const onChange = (time, timeString) => {
-  //   console.log(time, timeString);
-  // };
   const content = (
     <div>
       <TimePicker
