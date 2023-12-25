@@ -2,10 +2,10 @@ import React, { useState } from "react";
 
 const CategoryDetail = ({ list }) => {
   const [items, setItems] = useState(list);
-  const menuItems = [...new Set(list.map((item) => item.categorie))];
+  const menuItems = [...new Set(list.map((item) => item.Group))];
 
   const filterItems = (curcat) => {
-    const newItems = list.filter((item) => item.categorie === curcat);
+    const newItems = list.filter((item) => item.Group === curcat);
     setItems(newItems);
   };
 
@@ -42,7 +42,6 @@ const CategoryDetail = ({ list }) => {
               <h5 className="card-title fw-bold fs-4">
                 {item.name} &nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;&nbsp;${item.price}
               </h5>
-              {/* <p className="card-text">{item.desc}</p> */}
             </div>
           </div>
         ))}

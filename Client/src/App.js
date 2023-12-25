@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./component/HomePage";
-import Categoriess from "./component/Category";
-import CategoryDetail from "./component/CategoryDetail";
+import Categoriess from "./component/User/Menu/Category";
+import CategoryDetail from "./component/User/Menu/CategoryDetail";
 import ReservationManagmentSystem from "./component/User/ReservationManagmentSystem";
 import Register from "./component/User/Register";
 import Login from "./component/User/Login";
@@ -20,6 +20,7 @@ import TableManagementSystem from "./component/Staff/TableManagementSystem";
 import AddTable from "./component/Staff/AddTable";
 import AddTable2 from "./component/Staff/AddTable2";
 import EditTable from "./component/Staff/EditTable";
+import Beaverage from "./component/User/Menu/Beaverage";
 
 function App() {
   return (
@@ -50,6 +51,7 @@ function App() {
           <Route path="/addtable" element={<AddTable />} />
           <Route path="/addtable2" element={<AddTable2 />} />
           <Route path="/edittable/:id" element={<EditTable />} />
+          <Route path="/beavarege" element={<Beaverage />} />
         </Routes>
       </BrowserRouter>
     </div>

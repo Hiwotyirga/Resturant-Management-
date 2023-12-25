@@ -11,8 +11,10 @@ app.use("/users", usersRouter);
 
 const userRouter = require("./routes/Reservation");
 app.use("/reservation", userRouter);
-const tableManagmentRouter=require("./routes/TableManagementSystem");
-app.use("/tablemanage",tableManagmentRouter);
+const tableManagmentRouter = require("./routes/TableManagementSystem");
+app.use("/tablemanage", tableManagmentRouter);
+const menuRouter = require("./routes/Menu");
+app.use("/menu", menuRouter);
 
 const staffRouter = require("./routes/Staff");
 app.use("/staff", staffRouter);
@@ -24,3 +26,4 @@ db.sequelize.sync().then(() => {
     console.log("server is run on port 9000");
   });
 });
+

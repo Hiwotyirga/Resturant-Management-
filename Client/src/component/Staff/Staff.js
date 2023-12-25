@@ -27,7 +27,7 @@ const Staff = () => {
 
   const onChanges = (value, valueString) => {
     console.log(value, valueString);
-    setTime({ ActualArrivalTime: value });
+    // setTime({ ActualArrivalTime: value });
   };
 
   useEffect(() => {
@@ -48,34 +48,23 @@ const Staff = () => {
   const closeTimePicker = () => {
     setPopoverVisible(false);
   };
-  const saveTimepicker = (reservationId) => {
+  const saveTimepicker = () => {
     try {
       axios
-        .put(`http://localhost:9000/reservation/actualtime/${reservationId}`, {
+        .put(`http://localhost:9000/reservation/actualtime/${id}`, {
           ActualArrivalTime: time.ActualArrivalTime.format("HH:mm:ss"),
         })
         .then((res) => {
           console.log(res.data);
-          setReservations((prevReservations) => {
-            return prevReservations.map((reservation) => {
-              if (reservation.id === reservationId) {
-                return {
-                  ...reservation,
-                  ActualArrivalTime: time.ActualArrivalTime.format("HH:mm:ss"),
-                };
-              }
-              return reservation;
-            });
-          });
         });
     } catch (error) {
       console.log({ error: "error" });
     }
   };
 
-  const onChange = (time, timeString) => {
-    console.log(time, timeString);
-  };
+  // const onChange = (time, timeString) => {
+  //   console.log(time, timeString);
+  // };
   const content = (
     <div>
       <TimePicker
@@ -87,7 +76,7 @@ const Staff = () => {
       <Button
         type="primary"
         onClick={() => {
-          saveTimepicker(reservation.id);
+          saveTimepicker(id);
         }}
       >
         OK

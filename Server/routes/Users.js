@@ -31,7 +31,7 @@ router.post("/login", async (req, res) => {
       res.json({ error: "wrong password or email " });
     }
   } else {
-    res.json({ error: "This name is doesn't exist" }); 
+    res.json({ error: "This name is doesn't exist" });
   }
 
   //  res.json("secuss")

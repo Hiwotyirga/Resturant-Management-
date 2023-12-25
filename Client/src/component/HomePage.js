@@ -6,11 +6,20 @@ import {
   UserOutlined,
   VideoCameraOutlined,
   BellOutlined,
+  MenuOutlined,
 } from "@ant-design/icons";
-import { Layout, Menu, Button, Input, theme, ConfigProvider } from "antd";
-import Categoriess from "./Category";
+import {
+  Layout,
+  Menu,
+  Button,
+  Input,
+  theme,
+  ConfigProvider,
+  Breadcrumb,
+} from "antd";
+import Categoriess from "./User/Menu/Category";
 import { notification } from "antd";
-import CategoryDetail from "./CategoryDetail";
+import CategoryDetail from "./User/Menu/CategoryDetail";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Login from "./User/Login";
@@ -19,9 +28,19 @@ import ReservationManagmentSystem from "./User/ReservationManagmentSystem";
 import Table from "./User/table";
 import NotificationBell from "./User/NotificationBell";
 import { Link } from "react-router-dom";
+import Beaverage from "./User/Menu/Beaverage";
 
 const { Header, Sider, Content } = Layout;
 const { Search } = Input;
+function getItem(label, key, icon, children) {
+  return {
+    key,
+    icon,
+    children,
+    label,
+  };
+}
+const item = [];
 
 const HomePage = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -74,6 +93,10 @@ const HomePage = () => {
         return "";
       case "2":
         return "";
+      case "2-1":
+        return "";
+      case "2-2":
+        return "";
       case "3":
         return <ReservationManagmentSystem />;
       default:
@@ -86,7 +109,11 @@ const HomePage = () => {
       case "1":
         return <div>Hello from Content 1</div>;
       case "2":
+        return "";
+      case "2-1":
         return <Categoriess list={list} />;
+      case "2-2":
+        return <Beaverage />;
       case "3":
         return <Table />;
       default:
@@ -106,13 +133,10 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    // Fetch initial reservation count
     fetchReservationCount();
 
-    // Set up polling interval (e.g., every 10 seconds)
     const intervalId = setInterval(fetchReservationCount, 10000);
 
-    // Clean up interval on component unmount
     return () => clearInterval(intervalId);
   }, []);
 
@@ -170,13 +194,33 @@ const HomePage = () => {
               },
               {
                 key: "2",
-                icon: <UserOutlined />,
+                icon: <MenuOutlined />,
                 label: "Menu",
+                children: [
+                  {
+                    key: "2-1",
+                    label: "Food",
+                    icon: (
+                      <span role="img" aria-label="food">
+                        🍔
+                      </span>
+                    ),
+                  },
+                  {
+                    key: "2-2",
+                    label: "Beverage",
+                    icon: (
+                      <span role="img" aria-label="beverage">
+                        🥤
+                      </span>
+                    ),
+                  },
+                ],
               },
               {
                 key: "3",
                 icon: <VideoCameraOutlined />,
-                label: "Table Management",
+                label: "Reservation Management",
               },
               {
                 key: "4",
