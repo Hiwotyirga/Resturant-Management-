@@ -186,7 +186,7 @@ router.get("/status", checkReservationStatus, (req, res) => {
 router.post(
   "/",
   validateToken,
-  // checkReservationStatus,
+  checkReservationStatus,
   // ReservationMaxDuration,
   async (req, res) => {
     const { name, id } = req.user;
