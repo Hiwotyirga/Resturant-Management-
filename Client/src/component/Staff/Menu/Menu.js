@@ -17,11 +17,12 @@ const MenuList = () => {
 
   const handleDelete = async (itemId) => {
     try {
-      const response = await axios.delete(`/api/delete/${String(itemId)}`);
+      const response = await axios.delete(
+        `http://localhost:9000/menu/delete/${itemId}`
+      );
 
       if (response.status === 200) {
         console.log("Menu item deleted successfully");
-        // You might want to update your component state or trigger a refresh here
       } else {
         console.error(`Error deleting menu item: ${response.data.error}`);
       }
