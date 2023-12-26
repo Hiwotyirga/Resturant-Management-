@@ -11,6 +11,21 @@ const FoodmenuItem = () => {
 
         })
     })
+    const handleDelete = async (itemId) => {
+      try {
+        const response = await axios.delete(
+          `http://localhost:9000/menu/delete/${itemId}`
+        );
+  
+        if (response.status === 200) {
+          Swall.fire("Menu  deleted", "successfully");
+        } else {
+          console.error(`Error deleting menu item: ${response.data.error}`);
+        }
+      } catch (error) {
+        console.error("An unexpected error occurred:", error);
+      }
+    };
     const columns = [
        
        
@@ -48,7 +63,9 @@ const FoodmenuItem = () => {
             <Space size="middle">
               <a onClick={() => edittable(data.id)}>
                 <EditOutlined />
-              </a>
+              </a >
+              <a onClick={() => handleDelete(data.id)}> <Button>Delete Item</Button></a>
+              
             </Space>
           ),
         },

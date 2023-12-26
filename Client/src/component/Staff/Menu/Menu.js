@@ -22,7 +22,7 @@ const MenuList = () => {
       );
 
       if (response.status === 200) {
-        console.log("Menu item deleted successfully");
+        Swall.fire("Menu  deleted", "successfully");
       } else {
         console.error(`Error deleting menu item: ${response.data.error}`);
       }
