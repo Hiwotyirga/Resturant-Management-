@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Table, Space, Button, Popover } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const MenuList = () => {
   const [menu, setMenu] = useState([]);
@@ -31,7 +32,7 @@ const MenuList = () => {
       dataIndex: "name",
       key: "name",
     },
-    { 
+    {
       title: "Poster",
       dataIndex: "postrer",
       key: "postrer",
@@ -41,15 +42,16 @@ const MenuList = () => {
       dataIndex: "price",
       key: "price",
     },
-    
-    
+
     {
       title: "Action",
       key: "action",
       render: (_, data) => (
         <Space size="middle">
-          <a onClick={() => edittable(data.id)}>
-            <EditOutlined />
+          <a>
+            <Link to={`/editmenu/${data.id}`}>
+              <EditOutlined />
+            </Link>
           </a>
         </Space>
       ),
