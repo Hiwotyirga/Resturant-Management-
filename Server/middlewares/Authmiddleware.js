@@ -2,7 +2,7 @@
 
 // const validateToken=(req,res,next)=>{
 //     const accessToken=req.header("accessToken");
-    
+
 //     if(!accessToken){
 //         res.json({error:"Users not logged"})
 //     }
@@ -17,12 +17,6 @@
 //     }
 // }
 // module.exports = { validateToken };
-
-
-
-
-
-
 
 const { verify } = require("jsonwebtoken");
 
@@ -42,7 +36,7 @@ const validateToken = (req, res, next) => {
     }
 
     // Token is valid
-    req.user = { name: validToken.name,id:validToken.id };
+    req.user = { name: validToken.name, id: validToken.id };
     return next();
   } catch (error) {
     return res.status(401).json({ error: "Invalid token" });

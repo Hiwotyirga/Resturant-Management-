@@ -15,9 +15,21 @@ import TableManagementSystem from "./TableManagementSystem";
 import AddTable from "./AddTable";
 import MenuList from "./Menu/Menu";
 import Addmenu from "./Menu/Addmenu";
+import FoodmenuItem from "./Menu/FoodmenuItem";
+import AddFoodmenu from "./Menu/AddFoodmenuItem";
+import Addbeaverageitem from "./AddbeaverageItem";
+import BeaverageMenuItem from "./Menu/BeaverageMenuItem";
 
 const { Header, Sider, Content } = Layout;
 const { Search } = Input;
+function getItem(label, key, icon, children) {
+  return {
+    key,
+    icon,
+    children,
+    label,
+  };
+}
 
 const ReservationStaff = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -68,7 +80,13 @@ const ReservationStaff = () => {
       case "1":
         return <div>Hello from Content 1</div>;
       case "2":
-        return <Addmenu/>;
+        return "";
+      case "2-1":
+        return <Addmenu />;
+      case "2-2":
+        return <AddFoodmenu />;
+      case "2-3":
+        return <Addbeaverageitem />;
       //  <Categoriess list={list} />;
       case "3":
         return <Status />;
@@ -86,7 +104,13 @@ const ReservationStaff = () => {
       case "1":
         return <div>Hello from Content 1</div>;
       case "2":
+        return "";
+      case "2-1":
         return <MenuList />;
+      case "2-2":
+        return <FoodmenuItem />;
+      case "2-3":
+        return <BeaverageMenuItem />;
 
       case "3":
         return <Staff />;
@@ -129,6 +153,35 @@ const ReservationStaff = () => {
               key: "2",
               icon: <UserOutlined />,
               label: "Menu",
+              children: [
+                {
+                  key: "2-1",
+                  label: "Add Menu",
+                  icon: (
+                    <span role="img" aria-label="food">
+                      🍔
+                    </span>
+                  ),
+                },
+                {
+                  key: "2-2",
+                  label: "Add Food Item",
+                  icon: (
+                    <span role="img" aria-label="food">
+                      🍔
+                    </span>
+                  ),
+                },
+                {
+                  key: "2-3",
+                  label: "Add Beverage Item",
+                  icon: (
+                    <span role="img" aria-label="beverage">
+                      🥤
+                    </span>
+                  ),
+                },
+              ],
             },
             {
               key: "3",

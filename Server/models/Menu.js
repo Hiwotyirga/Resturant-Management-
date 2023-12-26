@@ -8,7 +8,7 @@ module.exports = (Sequelize, DataTypes, Op, Model) => {
     categorie: {
       type: DataTypes.STRING,
       allowNull: true,
-    },
+    }, 
     Ingredients: {
       type: DataTypes.STRING,
       allowNull: true,
@@ -30,10 +30,6 @@ module.exports = (Sequelize, DataTypes, Op, Model) => {
       allowNull: false,
     },
   });
-
-  // Reservation.associate = (models) => {
-  //   Reservation.belongsTo(models.Users, { foreignKey: "userId" });
-  // };
 
   return Menu;
 };

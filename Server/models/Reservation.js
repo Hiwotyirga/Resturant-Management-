@@ -52,7 +52,6 @@ module.exports = (Sequelize, DataTypes, Op, Model) => {
     TableNumber: {
       type: DataTypes.STRING,
       allowNull: true,
-      defaultValue: [],
     },
     // Start: {
     //   type: DataTypes.STRING,

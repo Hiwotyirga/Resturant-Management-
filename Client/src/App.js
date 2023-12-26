@@ -24,6 +24,12 @@ import Beaverage from "./component/User/Menu/Beaverage";
 import MenuList from "./component/Staff/Menu/Menu";
 import Addmenu from "./component/Staff/Menu/Addmenu";
 import Addmenu2 from "./component/Staff/Menu/Addmenu2";
+import FoodmenuItem from "./component/Staff/Menu/FoodmenuItem";
+import AddFoodmenu from "./component/Staff/Menu/AddFoodmenuItem";
+import AddFoodmenu2 from "./component/Staff/Menu/AddFoodmenuitem2";
+import BeaverageMenuItem from "./component/Staff/Menu/BeaverageMenuItem";
+import Addbeaverageitem from "./component/Staff/AddbeaverageItem";
+import AddbeaverageItem2 from "./component/Staff/Menu/AddbeaveragemenuItem2";
 
 function App() {
   return (
@@ -58,6 +64,12 @@ function App() {
           <Route path="/menu" element={<MenuList />} />
           <Route path="/addmenu" element={<Addmenu />} />
           <Route path="/addmenu2" element={<Addmenu2 />} />
+          <Route path="/addfood" element={<FoodmenuItem />} />
+          <Route path="/addfooditem" element={<AddFoodmenu />} />
+          <Route path="/addfooditem2" element={<AddFoodmenu2 />} />
+          <Route path="beaveragemenuitem" element={<BeaverageMenuItem />} />
+          <Route path="/addbeavergeitem" element={<Addbeaverageitem />} />
+          <Route path="/addbeaverageitem2" element={<AddbeaverageItem2 />} />
         </Routes>
       </BrowserRouter>
     </div>

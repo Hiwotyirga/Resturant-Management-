@@ -8,17 +8,17 @@ router.get("/", async (req, res) => {
 });
 router.get("/food", async (req, res) => {
   const menu = await Menu.findAll({
-    where:{
-      categorie:"food"
-    }
+    where: {
+      categorie: "Food",
+    },
   });
   res.json(menu);
 });
 router.get("/beaverage", async (req, res) => {
   const menu = await Menu.findAll({
-    where:{
-      categorie:"Beaverage"
-    }
+    where: {
+      categorie: "Beaverage",
+    },
   });
   res.json(menu);
 });
@@ -28,14 +28,26 @@ router.post("/", async (req, res) => {
   await Menu.create(Post);
   res.json(Post);
 });
-// router.get("/beaverage", async (req, res) => {
-//   const beaverage = await Beaverage.findAll();
-//   res.json(beaverage);
-// });
+router.put("/update/:id", async (req, res) => {
+  const { categorie, Ingredients, Group, name, postrer, price } = req.body;
+  const { id } = req.params;
+  const Posts = { categorie, Ingredients, Group, name, postrer, price };
+  try {
+    const updatemenu = await Menu.findByPk(id);
+    if (updatemenu) {
+      await Menu.update(Posts, {
+        where: {
+          id: id
+        }
+      });
+      res.json(Posts);
+    } else {
+      res.status(404).json({ error: "Menu item not found" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
-// router.post("/beavarege", async (req, res) => {
-//   const Posts = req.body;
-//   await Beaverage.create(Posts);
-//   res.json(Posts);
-// });
 module.exports = router;
