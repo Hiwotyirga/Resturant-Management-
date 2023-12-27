@@ -24,10 +24,9 @@ const Staff = () => {
 
   const { id } = useParams();
   dayjs.extend(customParseFormat);
-
-  const onChanges = (value, valueString) => {
-    console.log(value, valueString);
-    // setTime({ ActualArrivalTime: value });
+  const onChange = (time, timeString) => {
+    setSelectedTime(time);
+    console.log(time, timeString);
   };
 
   useEffect(() => {
@@ -41,18 +40,20 @@ const Staff = () => {
       });
   }, []);
 
-  const ShowPopover = () => {
+  const ShowPopover = (currentReservation) => {
+    setReservation(currentReservation);
     setPopoverVisible(true);
   };
 
   const closeTimePicker = () => {
     setPopoverVisible(false);
   };
-  const saveTimepicker = () => {
+  const saveTimepicker = (timeId) => {
+    setPopoverVisible(false);
     try {
       axios
-        .put(`http://localhost:9000/reservation/actualtime/${id}`, {
-          ActualArrivalTime: time.ActualArrivalTime.format("HH:mm:ss"),
+        .put(`http://localhost:9000/reservation/actualtime/${timeId}`, {
+          ActualArrivalTime: selectedTime.format("HH:mm:ss"),
         })
         .then((res) => {
           console.log(res.data);
@@ -63,16 +64,22 @@ const Staff = () => {
   };
   const content = (
     <div>
-      <TimePicker
+      {/* <TimePicker
         onChange={onChanges}
-        defaultOpenValue={dayjs("00:00:00", "HH:mm:ss")}
-        value={time.ActualArrivalTime ? dayjs(time.ActualArrivalTime) : null}
+        defaultOpenValue={dayjs("HH:mm:ss")}
+        value={selectedTime ? moment(selectedTime) : null}
+      /> */}
+      <TimePicker
+        onChange={onChange}
+        defaultOpenValue={moment("00:00:00", "HH:mm:ss")}
+        value={selectedTime}
       />
+
       <Button onClick={closeTimePicker}>Cancel</Button>
       <Button
         type="primary"
         onClick={() => {
-          saveTimepicker(id);
+          saveTimepicker(reservation.id);
         }}
       >
         OK
@@ -127,8 +134,6 @@ const Staff = () => {
           return reservation;
         });
       });
-
-      // await handleFeeStatusUpdate(reservationId); // Wait for fee update before proceeding
 
       Swal.fire("Table Number", "Success full");
     } catch (error) {
@@ -256,8 +261,8 @@ const Staff = () => {
           <a onClick={() => startReservation(data.id)}>
             <button>Start</button>
           </a>
-          <a onClick={ShowPopover}>
-            <button>Arrival Time </button>
+          <a onClick={() => ShowPopover(data)}>
+            <button>Actual Arrival Time </button>
           </a>
         </Space>
       ),
@@ -291,6 +296,7 @@ const Staff = () => {
       <Table columns={columns} dataSource={reservations} />
       <div>
         <Popover
+          // key={popoverVisible ? "visible" : "hidden"}
           title="Select Arrival Time"
           content={content}
           trigger="click"

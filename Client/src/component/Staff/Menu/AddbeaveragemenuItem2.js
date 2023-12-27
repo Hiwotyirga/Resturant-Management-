@@ -27,7 +27,7 @@ const AddbeaverageItem2 = () => {
   return (
     <div className="con">
       <form>
-        <div className="form-group">
+        {/* <div className="form-group">
           <label htmlFor="exampleFormControlSelect1">Categorie</label>
           <select
             className="form-control"
@@ -41,7 +41,7 @@ const AddbeaverageItem2 = () => {
             <option value="Food">Food</option>
             <option value="Beaverage">Beaverage</option>
           </select>
-        </div>
+        </div> */}
         <div className="form-group">
           <label htmlFor="exampleFormControlInput1">Ingredients</label>
           <input
