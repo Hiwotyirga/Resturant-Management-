@@ -9,13 +9,11 @@ const Status = () => {
   const [count, setCount] = useState(0);
   const [start, setStart] = useState(0);
   const [cancle, setCancle] = useState(0);
-  useEffect(()=>{
-    axios.get("http://localhost:9000/reservation/cancel-count").then((res)=>{
-      setCancle(res.data)
-    })
-
-  },[])
-
+  useEffect(() => {
+    axios.get("http://localhost:9000/reservation/cancel-count").then((res) => {
+      setCancle(res.data);
+    });
+  }, []);
 
   const fetchReservationstart = async () => {
     try {
@@ -38,7 +36,19 @@ const Status = () => {
     }
   };
   useEffect(() => {
-   
+    // fetchReservationstart();
+    fetchReservationconfirm();
+
+    const intervalId = setInterval(
+      fetchReservationconfirm,
+      // fetchReservationstart,
+      10000
+    );
+
+    // Clean up interval on component unmount
+    return () => clearInterval(intervalId);
+  }, []);
+  useEffect(() => {
     fetchReservationstart();
     // fetchReservationconfirm();
 

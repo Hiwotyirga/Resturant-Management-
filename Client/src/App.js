@@ -31,6 +31,7 @@ import BeaverageMenuItem from "./component/Staff/Menu/BeaverageMenuItem";
 import Addbeaverageitem from "./component/Staff/AddbeaverageItem";
 import AddbeaverageItem2 from "./component/Staff/Menu/AddbeaveragemenuItem2";
 import EditMenu from "./component/Staff/Menu/EditMenu";
+import BeaverageDetial from "./component/User/Menu/BeaverageDetial";
 
 function App() {
   return (
@@ -72,6 +73,7 @@ function App() {
           <Route path="/addbeavergeitem" element={<Addbeaverageitem />} />
           <Route path="/addbeaverageitem2" element={<AddbeaverageItem2 />} />
           <Route path="/editmenu/:id" element={<EditMenu />} />
+          <Route path="/beaveragedetial" element={<BeaverageDetial />} />
         </Routes>
       </BrowserRouter>
     </div>

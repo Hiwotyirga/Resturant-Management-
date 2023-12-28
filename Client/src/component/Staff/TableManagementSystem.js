@@ -11,7 +11,6 @@ const TableManagementSystem = () => {
       setTables(res.data);
     });
   }, []);
-  const edittable = () => {};
   const columns = [
     {
       title: "Table Number",

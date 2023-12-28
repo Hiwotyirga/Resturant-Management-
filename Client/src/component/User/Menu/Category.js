@@ -18,7 +18,7 @@ const Categoriess = () => {
   }, []);
   return (
     <div className="container-fluid">
-      <h1 className="col-12 text-center my-3 fw-bold">Our Menu</h1>
+      <h1 className="col-12 text-center my-3 fw-bold">Our Food Menu</h1>
       <CategoryDetail list={list} />
       <div className="row justify-content-center">
         {list.map((Val) => {
@@ -32,16 +32,29 @@ const Categoriess = () => {
               </div>
               <div className="card-body">
                 <div className="card-title fw-bold fs-4">
-                  {Val.name} &nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;&nbsp;
-                  {Val.price}
+                  <h5 className="card-title fw-bold fs-4">
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <div>{Val.name}</div>
+                      <div style={{ marginLeft: "30px" }}>${Val.price}</div>
+                    </div>
+
+                    {/* &nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;&nbsp; */}
+                  </h5>
+                  <p>
+                    <div style={{ margin: "20px" }}>{Val.Ingredients}</div>
+                  </p>
                 </div>
               </div>
             </div>
           );
         })}
       </div>
-      <div className="d-flex justify-content-center">
-      </div>
+      <div className="d-flex justify-content-center"></div>
     </div>
   );
 };

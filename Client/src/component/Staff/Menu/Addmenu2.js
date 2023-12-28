@@ -25,7 +25,17 @@ const Addmenu2 = () => {
   };
 
   return (
-    <div className="con">
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100vh",
+        background: `linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.3)), url('https://tse3.mm.bing.net/th?id=OIP.oRrP8UuKNXMvqHyrA7uJfAHaEK&pid=Api&P=0&h=220')`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
       <form>
         <div className="form-group">
           <label htmlFor="exampleFormControlSelect1">Categorie</label>
@@ -35,7 +45,7 @@ const Addmenu2 = () => {
             name="indoor"
             value={newMenu.categorie}
             onChange={(event) =>
-              setNewTable({ ...newMenu, categorie: event.target.value })
+              setNewMenu({ ...newMenu, categorie: event.target.value })
             }
           >
             <option value="Food">Food</option>
@@ -114,7 +124,12 @@ const Addmenu2 = () => {
         </div>
 
         {/* <Link to="/staff"> */}
-        <Button type="button" className="btn bg-primary" onClick={haddleSubmit}>
+        <Button
+          type="button"
+          className="btn bg-primary"
+          onClick={haddleSubmit}
+          style={{ margin: "20px" }}
+        >
           Submit
         </Button>
         {/* </Link> */}

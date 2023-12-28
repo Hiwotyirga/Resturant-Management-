@@ -5,22 +5,31 @@ import { Link } from "react-router-dom";
 
 const Addmenu = () => {
   return (
-    <div style={{ display: "flex", flexDirection: "row" }}>
-      <div
-      >
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: " center",
+      }}
+    >
+      <div>
         <Link to="/addmenu2">
           <PlusOutlined
             style={{
-              marginLeft: "5px",
+              // marginLeft: "5px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: " center",
+
               width: "25px",
               height: "25px",
               background: "red",
-              display: "flex",
+              // display: "flex",
             }}
           />
         </Link>
       </div>
-      <p>Add Menu</p>
+      <p style={{ marginTop: "15px" }}>Add Menu</p>
     </div>
   );
 };

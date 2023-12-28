@@ -57,6 +57,17 @@ const Staff = () => {
         })
         .then((res) => {
           console.log(res.data);
+          setReservations((prevReservations) => {
+            return prevReservations.map((reservation) => {
+              if (reservation.id === timeId) {
+                return {
+                  ...reservation,
+                  ActualArrivalTime: selectedTime.format("HH:mm:ss"),
+                };
+              }
+              return reservation;
+            });
+          });
         });
     } catch (error) {
       console.log({ error: "error" });

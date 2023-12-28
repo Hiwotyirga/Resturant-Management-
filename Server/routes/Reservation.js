@@ -200,19 +200,16 @@ router.post(
         Selection,
         userId: id,
       };
-  
+
       await Reservation.create(newReservation);
       if (req.reservationExpired) {
         return res.status(400).json({ error: "Reservation has expired" });
       }
-  
+
       res.json(newReservation);
-      
     } catch (error) {
-      res.json({error:"error"})
-      
+      res.json({ error: "error" });
     }
-    
   }
 );
 
@@ -235,24 +232,29 @@ router.put("/userdata", validateToken, async (req, res) => {
 
 //admin to give table for user
 
+// In your routes
 router.put("/table/:id", async (req, res) => {
   const reservationId = req.params.id;
-  const { TableNumber } = req.body;
+  const { TableNumbers } = req.body;
 
   try {
     const reservation = await Reservation.findByPk(reservationId);
 
     if (!reservation) {
       return res.status(404).json({ error: "Reservation not found" });
-    }
-    reservation.TableNumber = TableNumber;
+    }  
+
+    // Assuming TableNumbers is an array
+    reservation.TableNumbers = TableNumbers;
     await reservation.save();
+
     res.json(reservation);
   } catch (error) {
     console.error("Table update error:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
 //admine to confirm
 router.put("/comfirm/:id", async (req, res) => {
   const { id } = req.params;
@@ -299,7 +301,7 @@ router.put("/feestatus/:id", async (req, res) => {
 });
 router.put("/actualtime/:id", async (req, res) => {
   const { ActualArrivalTime } = req.body;
-  const {id} = req.params;
+  const { id } = req.params;
 
   const reservation = await Reservation.findByPk(id);
 

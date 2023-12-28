@@ -42,7 +42,14 @@ const MenuList = () => {
         })
         .then((res) => {
           // console.log(res.data)
-          setMenu(res.data);
+          setMenu((prevMenu) => {
+            return prevMenu.map((menuItem) => {
+              if (menuItem.id === priceId) {
+                return { ...menuItem, price: updateprice };
+              }
+              return menuItem;
+            });
+          });
         });
       Swal.fire("UPdate Table", "success");
     } catch (error) {

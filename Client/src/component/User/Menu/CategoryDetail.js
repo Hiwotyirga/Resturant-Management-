@@ -39,9 +39,22 @@ const CategoryDetail = ({ list }) => {
               <img src={item.postrer} alt={item.name} className="photo w-75" />
             </div>
             <div className="card-body">
-              <h5 className="card-title fw-bold fs-4">
-                {item.name} &nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;&nbsp;${item.price}
+              <h5
+                className="card-title fw-bold fs-4"
+                style={{ justifyContent: "space-evenly" }}
+              >
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <div>{item.name}</div>
+                  <div style={{ marginLeft: "30px" }}>${item.price}</div>
+                  {/* <div>{item.Ingredients}</div> */}
+                </div>
+                
+
+                {/* &nbsp;&nbsp;&nbsp;&nbsp;--&nbsp;&nbsp; */}
               </h5>
+              <p><div style={{ margin: "20px" }}>{item.Ingredients}</div></p>
             </div>
           </div>
         ))}

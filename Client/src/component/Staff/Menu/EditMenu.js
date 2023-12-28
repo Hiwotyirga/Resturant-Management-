@@ -15,7 +15,7 @@ const EditMenu = () => {
     price: "",
   });
   const hist = useNavigate();
-  const {id} =useParams();
+  const { id } = useParams();
   const haddleSubmit = () => {
     axios
       .put(`http://localhost:9000/menu/update/${id}`, newMenu)
@@ -23,12 +23,23 @@ const EditMenu = () => {
         setNewMenu(res.data);
         // console.log(res.data);
         hist("/staff");
+        Swal.fire("Add Menu", "success");
       });
-    Swal.fire("Add Menu", "success");
+    
   };
 
   return (
-    <div className="con">
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100vh",
+        background: `linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.3)), url('https://tse3.mm.bing.net/th?id=OIP.oRrP8UuKNXMvqHyrA7uJfAHaEK&pid=Api&P=0&h=220')`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
       <form>
         <div className="form-group">
           <label htmlFor="exampleFormControlSelect1">Categorie</label>
@@ -38,7 +49,7 @@ const EditMenu = () => {
             name="indoor"
             value={newMenu.categorie}
             onChange={(event) =>
-              setNewTable({ ...newMenu, categorie: event.target.value })
+              setNewMenu({ ...newMenu, categorie: event.target.value })
             }
           >
             <option value="Food">Food</option>
@@ -117,8 +128,13 @@ const EditMenu = () => {
         </div>
 
         {/* <Link to="/staff"> */}
-        <Button type="button" className="btn bg-primary" onClick={haddleSubmit}>
-         update
+        <Button
+          type="button"
+          className="btn bg-primary"
+          onClick={haddleSubmit}
+          style={{ margin: "10px" }}
+        >
+          update
         </Button>
         {/* </Link> */}
       </form>

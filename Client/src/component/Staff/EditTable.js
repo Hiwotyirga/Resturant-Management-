@@ -33,7 +33,15 @@ const EditTable = () => {
   };
 
   return (
-    <div className="con">
+    <div   style={{
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      height: "100vh",
+      background: `linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.3)), url('https://tse3.mm.bing.net/th?id=OIP.oRrP8UuKNXMvqHyrA7uJfAHaEK&pid=Api&P=0&h=220')`,
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+    }}>
       <form>
         <div class="form-group">
           <label for="exampleFormControlInput1">Table Number</label>

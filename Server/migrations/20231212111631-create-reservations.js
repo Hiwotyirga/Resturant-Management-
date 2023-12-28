@@ -60,7 +60,7 @@ module.exports = {
       //   allowNull: true,
       // },
       userId: {
-        type: Sequelize.UUID, 
+        type: Sequelize.UUID,
         references: {
           model: "Users",
           key: "id",
